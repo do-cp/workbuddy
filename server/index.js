@@ -63,7 +63,7 @@ COMPANY: comparit | brand: cpit (compare it) | Insurance comparison software | O
 LEADERSHIP:
 - Matthias Brauch | CEO | Hamburg | deutsch, englisch | mb@comparit.de
 - Axel Karkowski | COO | Hamburg | deutsch, englisch | ak@comparit.de
-- Ylle Dragaj | CTO | Remote Baden-Württemberg | deutsch, englisch | yd@comparit.de
+- Ylle Dragaj | CTO | Remote Baden-Württemberg | deutsch, englisch, albanisch | yd@comparit.de
 - Ellen Ludwig | CPO | Hamburg | deutsch, englisch | el@comparit.de
 - Oliver Fink | CMO | Remote NRW | deutsch, englisch | of@comparit.de
 - Alexander Lipp | CSO | Remote NRW | deutsch, englisch | al@comparit.de
@@ -73,8 +73,8 @@ LEADERSHIP:
 DEVELOPMENT TEAM (Team Entwicklung):
 - Donart Pllashniku | Team Lead BE/UI | Prishtina | albanisch, englisch, deutsch | dp@comparit.de
 - Drilon Osmanaj | QA Engineer | Prishtina | albanisch, englisch | do@comparit.de
-- Behar Simnica | Senior Developer | Prishtina | albanisch, englisch, deutsch | bs@comparit.de
-- Çlirim Murati | Senior Software Developer | Prishtina | albanisch, englisch, deutsch | cm@comparit.de
+- Behar Simnica | Senior Developer | Prishtina | albanisch, englisch | bs@comparit.de
+- Çlirim Murati | Senior Software Developer | Prishtina | albanisch, englisch | cm@comparit.de
 - Zgjim Kabashi | Senior Software Developer | Prishtina | albanisch, englisch | zk@comparit.de
 - Korab Qarri | Senior Software Developer | Prishtina | albanisch, englisch | kq@comparit.de
 - Lorik Haxhidauti | Senior Software Developer | Prishtina | albanisch, englisch | lh@comparit.de
