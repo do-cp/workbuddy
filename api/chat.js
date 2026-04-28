@@ -1,7 +1,16 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-runtime';
 
-const MODEL_ID = 'gemini-1.5-flash';
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const REGION = process.env.AWS_REGION || 'eu-north-1';
+const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'eu.amazon.nova-pro-v1:0';
+
+const bedrock = new BedrockRuntimeClient({
+  region: REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.AWS_SESSION_TOKEN,
+  },
+});
 
 const SYSTEM_PROMPT = `You are WorkBuddy, the friendly internal AI assistant for comparit (cpit) — an insurance comparison software company with offices in Hamburg, Germany and Prishtina, Kosovo.
 
@@ -85,6 +94,7 @@ ABBREVIATIONS: BU=Berufsunfähigkeitsversicherung (Disability Insurance), LV=Leb
 CONTACTS: IT issues → #it-support on Slack | HR → hr@comparit.de or Laimi | Operations/Office → Laimi | QA → Nina (Lead) or Drilon (Cypress) | Product → Ylle`;
 
 export default async function handler(req, res) {
+  // CORS headers — allow the deployed frontend domain
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -100,6 +110,7 @@ export default async function handler(req, res) {
   const clean = messages
     .filter((m) => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim())
     .reduce((acc, m) => {
+      // Enforce alternating user/assistant (Bedrock requirement)
       if (!acc.length && m.role !== 'user') return acc;
       if (acc.length && acc[acc.length - 1].role === m.role) return acc;
       return [...acc, m];
@@ -107,32 +118,22 @@ export default async function handler(req, res) {
 
   if (!clean.length) return res.status(400).json({ error: 'No valid messages' });
 
-  const lastMessage = clean[clean.length - 1];
-  const history = clean.slice(0, -1);
-
   try {
-    const model = genAI.getGenerativeModel({
-      model: MODEL_ID,
-      systemInstruction: SYSTEM_PROMPT,
+    const command = new ConverseCommand({
+      modelId: MODEL_ID,
+      system: [{ text: SYSTEM_PROMPT }],
+      messages: clean.map((m) => ({ role: m.role, content: [{ text: m.content }] })),
+      inferenceConfig: { maxTokens: 1024, temperature: 0.65, topP: 0.9 },
     });
 
-    const chat = model.startChat({
-      history: history.map((m) => ({
-        role: m.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: m.content }],
-      })),
-      generationConfig: {
-        maxOutputTokens: 1024,
-        temperature: 0.65,
-        topP: 0.9,
-      },
-    });
-
-    const result = await chat.sendMessage(lastMessage.content);
-    const text = result.response.text();
+    const result = await bedrock.send(command);
+    const text = result.output?.message?.content?.[0]?.text ?? '';
     res.json({ content: text });
   } catch (err) {
-    console.error('[Gemini]', err.name, err.message);
+    console.error('[Bedrock]', err.name, err.message);
+    if (err.name === 'ExpiredTokenException' || err.message?.includes('expired')) {
+      return res.status(401).json({ error: 'AWS_EXPIRED' });
+    }
     res.status(500).json({ error: err.message });
   }
 }
