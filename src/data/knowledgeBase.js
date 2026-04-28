@@ -199,7 +199,8 @@ export const contacts = {
 export const categories = [
   {
     id: 'people',
-    icon: 'people',
+    emoji: '👥',
+    iconBg: '#EDE9FF',
     label: 'People & Teams',
     sublabel: 'Find who works on what',
     suggestions: [
@@ -211,7 +212,8 @@ export const categories = [
   },
   {
     id: 'it',
-    icon: 'tools',
+    emoji: '🧰',
+    iconBg: '#FFE9E9',
     label: 'IT & Tools',
     sublabel: 'Tools, access, setup',
     suggestions: [
@@ -223,7 +225,8 @@ export const categories = [
   },
   {
     id: 'leave',
-    icon: 'calendar',
+    emoji: '🌴',
+    iconBg: '#E6F9EE',
     label: 'Leave & Absence',
     sublabel: 'Vacation, sick days, policy',
     suggestions: [
@@ -235,9 +238,10 @@ export const categories = [
   },
   {
     id: 'schedule',
-    icon: 'clock',
+    emoji: '🗓️',
+    iconBg: '#E8F0FF',
     label: 'Schedules & Rhythm',
-    sublabel: 'Meetings, core hours',
+    sublabel: 'Standups, sprints, all-hands',
     suggestions: [
       "What's the daily standup time?",
       'Which meetings are mandatory?',
@@ -247,7 +251,8 @@ export const categories = [
   },
   {
     id: 'office',
-    icon: 'building',
+    emoji: '🏢',
+    iconBg: '#F0F0F0',
     label: 'Office & Operations',
     sublabel: 'Hamburg, Prishtina, events',
     suggestions: [
@@ -259,7 +264,8 @@ export const categories = [
   },
   {
     id: 'glossary',
-    icon: 'doc',
+    emoji: '📖',
+    iconBg: '#E6F7F5',
     label: 'Glossary',
     sublabel: 'Abbreviations & insurance terms',
     suggestions: [
@@ -271,7 +277,8 @@ export const categories = [
   },
   {
     id: 'news',
-    icon: 'megaphone',
+    emoji: '📣',
+    iconBg: '#FFF3E0',
     label: 'News & Updates',
     sublabel: "Announcements, what's new",
     suggestions: [

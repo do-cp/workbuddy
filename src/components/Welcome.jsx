@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { WorkBuddyAvatar, ICON_MAP } from '../icons.jsx';
+import { WorkBuddyAvatar } from '../icons.jsx';
 import { categories } from '../data/knowledgeBase.js';
 
 const s = {
@@ -131,7 +131,6 @@ export default function Welcome({ onPick, hasHistory, onResume }) {
       <div style={s.sectionLabel}>Browse by topic</div>
       <div style={s.grid}>
         {categories.map((cat) => {
-          const IconCmp = ICON_MAP[cat.icon];
           const isActive = activeId === cat.id;
           return (
             <button
@@ -140,8 +139,8 @@ export default function Welcome({ onPick, hasHistory, onResume }) {
               style={{ ...s.card, ...(isActive ? s.cardActive : {}) }}
               onClick={() => setActiveId(isActive ? null : cat.id)}
             >
-              <div style={{ ...s.cardIcon, ...(isActive ? s.cardIconActive : {}) }}>
-                <IconCmp size={20} />
+              <div style={{ ...s.cardIcon, background: cat.iconBg }}>
+                <span style={{ fontSize: 20, lineHeight: 1 }}>{cat.emoji}</span>
               </div>
               <div style={{ minWidth: 0 }}>
                 <div style={s.cardLabel}>{cat.label}</div>

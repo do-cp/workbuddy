@@ -87,49 +87,42 @@ export const NewChatIcon = ({ size = 18 }) => (
   </Icon>
 );
 
-export const WorkBuddyAvatar = ({ size = 30 }) => {
-  const TAN = '#D4A574';
-  const TAN_DARK = '#A8763E';
-  const BLACK = '#1A1A1A';
-  const CREAM = '#F2DEB8';
-  const GREEN = '#0AB7A7';
-  const GREEN_DARK = '#089487';
-
-  return (
-    <svg width={size} height={size} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
-      <circle cx="50" cy="50" r="50" fill="#E6F7F5" />
-      <path d="M24 30 L28 12 L40 26 Z" fill={TAN} stroke={BLACK} strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M27 19 L28 12 L33 18 Z" fill={BLACK} />
-      <path d="M76 30 L72 12 L60 26 Z" fill={TAN} stroke={BLACK} strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M73 19 L72 12 L67 18 Z" fill={BLACK} />
-      <path d="M30 27 L32 19 L36 26 Z" fill={TAN_DARK} opacity="0.7" />
-      <path d="M70 27 L68 19 L64 26 Z" fill={TAN_DARK} opacity="0.7" />
-      <path d="M28 38 Q28 24 50 24 Q72 24 72 38 L72 58 Q72 66 64 70 L36 70 Q28 66 28 58 Z" fill={TAN} stroke={BLACK} strokeWidth="1.8" />
-      <path d="M30 42 Q30 30 38 28 L42 36 L40 46 Q34 46 30 44 Z" fill={BLACK} opacity="0.85" />
-      <path d="M70 42 Q70 30 62 28 L58 36 L60 46 Q66 46 70 44 Z" fill={BLACK} opacity="0.85" />
-      <path d="M46 28 Q50 36 54 28 L52 42 L48 42 Z" fill={BLACK} opacity="0.7" />
-      <path d="M40 56 Q40 76 50 80 Q60 76 60 56 Z" fill={CREAM} stroke={BLACK} strokeWidth="1.5" />
-      <path d="M46 62 Q50 60 54 62 Q54 67 50 68 Q46 67 46 62 Z" fill={BLACK} />
-      <ellipse cx="48" cy="63.5" rx="1.2" ry="0.8" fill="#FFFFFF" opacity="0.7" />
-      <line x1="50" y1="68" x2="50" y2="73" stroke={BLACK} strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M44 73 Q50 78 56 73" fill="none" stroke={BLACK} strokeWidth="1.5" strokeLinecap="round" />
-      <ellipse cx="50" cy="76" rx="2" ry="1.2" fill="#E89AA8" />
-      <rect x="48" y="44" width="4" height="2" fill={BLACK} />
-      <rect x="32" y="40" width="17" height="11" rx="2.5" fill={BLACK} stroke={GREEN} strokeWidth="1.3" />
-      <rect x="51" y="40" width="17" height="11" rx="2.5" fill={BLACK} stroke={GREEN} strokeWidth="1.3" />
-      <rect x="34" y="42" width="5" height="1.5" fill={GREEN} opacity="0.95" />
-      <rect x="53" y="42" width="5" height="1.5" fill={GREEN} opacity="0.95" />
-      <rect x="42" y="47" width="2.5" height="1.2" fill="#FFFFFF" opacity="0.7" />
-      <rect x="61" y="47" width="2.5" height="1.2" fill="#FFFFFF" opacity="0.7" />
-      <rect x="28" y="44" width="4" height="1.8" fill={BLACK} />
-      <rect x="68" y="44" width="4" height="1.8" fill={BLACK} />
-      <rect x="46" y="82" width="8" height="8" rx="1.5" fill={GREEN_DARK} />
-      <path d="M46 83 L34 79 Q32 86 34 93 L46 89 Z" fill={GREEN} stroke={GREEN_DARK} strokeWidth="1" />
-      <path d="M54 83 L66 79 Q68 86 66 93 L54 89 Z" fill={GREEN} stroke={GREEN_DARK} strokeWidth="1" />
-      <rect x="47" y="83.5" width="2" height="5" fill={GREEN} opacity="0.5" />
-    </svg>
-  );
-};
+export const WorkBuddyAvatar = ({ size = 30 }) => (
+  <svg width={size} height={size} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+    {/* Background */}
+    <circle cx="50" cy="50" r="50" fill="#E6F7F5" />
+    {/* Antenna */}
+    <rect x="47" y="6" width="6" height="18" rx="3" fill="#0AB7A7" />
+    <circle cx="50" cy="5" r="5" fill="#089082" />
+    {/* Head */}
+    <rect x="18" y="22" width="64" height="48" rx="14" fill="#0AB7A7" />
+    {/* Left goggle outer */}
+    <circle cx="35" cy="44" r="13" fill="#1B1C50" />
+    <circle cx="35" cy="44" r="10" fill="#FFFFFF" />
+    <circle cx="35" cy="44" r="6" fill="#1B1C50" />
+    <circle cx="32" cy="41" r="2.2" fill="#FFFFFF" opacity="0.55" />
+    {/* Right goggle outer */}
+    <circle cx="65" cy="44" r="13" fill="#1B1C50" />
+    <circle cx="65" cy="44" r="10" fill="#FFFFFF" />
+    <circle cx="65" cy="44" r="6" fill="#1B1C50" />
+    <circle cx="62" cy="41" r="2.2" fill="#FFFFFF" opacity="0.55" />
+    {/* Goggle bridge */}
+    <rect x="48" y="42" width="4" height="4" rx="1" fill="#1B1C50" />
+    {/* Mouth / smile */}
+    <path d="M37 61 Q50 70 63 61" stroke="#1B1C50" strokeWidth="3" fill="none" strokeLinecap="round" />
+    {/* Cheek blush */}
+    <ellipse cx="24" cy="55" rx="5" ry="3.5" fill="#FFFFFF" opacity="0.25" />
+    <ellipse cx="76" cy="55" rx="5" ry="3.5" fill="#FFFFFF" opacity="0.25" />
+    {/* Body */}
+    <rect x="32" y="68" width="36" height="22" rx="8" fill="#089082" />
+    {/* Legs */}
+    <rect x="34" y="87" width="12" height="10" rx="5" fill="#0AB7A7" />
+    <rect x="54" y="87" width="12" height="10" rx="5" fill="#0AB7A7" />
+    {/* Chest light */}
+    <circle cx="50" cy="77" r="4" fill="#0AB7A7" opacity="0.6" />
+    <circle cx="50" cy="77" r="2" fill="#E6F7F5" opacity="0.8" />
+  </svg>
+);
 
 export const BuildingIcon = ({ size = 22 }) => (
   <Icon size={size}>
