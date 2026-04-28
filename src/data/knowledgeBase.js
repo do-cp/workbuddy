@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// WorkBuddy Knowledge Base — edit this file to update what WorkBuddy knows.
-// Non-technical teammates: just edit the data below and save. No code needed.
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const company = {
   name: 'comparit',
   brand: 'cpit',
@@ -11,138 +6,92 @@ export const company = {
 };
 
 export const people = [
-  {
-    name: 'Nina',
-    role: 'QA Lead',
-    office: 'Hamburg',
-    languages: ['German', 'English'],
-    focus: 'Automated Testing',
-    slack: '@nina',
-  },
-  {
-    name: 'Drilon',
-    role: 'QA Engineer',
-    office: 'Prishtina',
-    languages: ['Albanian', 'English', 'German'],
-    focus: 'Cypress expert',
-    slack: '@drilon',
-  },
-  {
-    name: 'Matthias',
-    role: 'Developer',
-    office: 'Hamburg',
-    languages: ['German', 'English'],
-    focus: 'cpit.SIGN',
-    slack: '@matthias',
-  },
-  {
-    name: 'Philipp',
-    role: 'Developer',
-    office: 'Hamburg',
-    languages: ['German', 'English'],
-    focus: 'Advisory Docs + AI',
-    slack: '@philipp',
-  },
-  {
-    name: 'Besnik',
-    role: 'Developer',
-    office: 'Prishtina',
-    languages: ['Albanian', 'English', 'German'],
-    focus: 'Advisory Docs + API',
-    slack: '@besnik',
-  },
-  {
-    name: 'Ylle',
-    role: 'Product Manager',
-    office: 'Prishtina',
-    languages: ['Albanian', 'English'],
-    focus: 'UserCenter',
-    slack: '@ylle',
-  },
-  {
-    name: 'Behar',
-    role: 'Developer',
-    office: 'Prishtina',
-    languages: ['Albanian', 'English', 'German'],
-    focus: 'UserCenter + Frontend',
-    slack: '@behar',
-  },
-  {
-    name: 'Laimi',
-    role: 'Operations',
-    office: 'Hamburg',
-    languages: ['German', 'English'],
-    focus: 'Events + Office Management',
-    slack: '@laimi',
-  },
-  {
-    name: 'Sarah',
-    role: 'Developer',
-    office: 'Hamburg',
-    languages: ['German', 'English'],
-    focus: 'API Layer + Tariff Display',
-    slack: '@sarah',
-  },
+  { name: 'Matthias Brauch', role: 'CEO', team: 'Management', office: 'Hamburg', languages: ['German', 'English'], email: 'mb@comparit.de' },
+  { name: 'Axel Karkowski', role: 'COO', team: 'Management', office: 'Hamburg', languages: ['German', 'English'], email: 'ak@comparit.de' },
+  { name: 'Ylle Dragaj', role: 'CTO', team: 'Development', office: 'Remote (Baden-Württemberg)', languages: ['German', 'English'], email: 'yd@comparit.de' },
+  { name: 'Ellen Ludwig', role: 'CPO', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'el@comparit.de' },
+  { name: 'Oliver Fink', role: 'CMO', team: 'Sales & Marketing', office: 'Remote (NRW)', languages: ['German', 'English'], email: 'of@comparit.de' },
+  { name: 'Alexander Lipp', role: 'CSO', team: 'Sales & Marketing', office: 'Remote (NRW)', languages: ['German', 'English'], email: 'al@comparit.de' },
+  { name: 'Martina Pirrung', role: 'CPMO', team: 'Sales & Marketing', office: 'Remote (Bavaria)', languages: ['German'], email: 'mp@comparit.de' },
+  { name: 'Laimi Pester', role: 'Assistentin der Geschäftsführung', team: 'Management', office: 'Remote (Brandenburg)', languages: ['German', 'English'], email: 'lp@comparit.de' },
+  { name: 'Donart Pllashniku', role: 'Team Lead BE / UI', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English', 'German'], email: 'dp@comparit.de' },
+  { name: 'Drilon Osmanaj', role: 'QA Engineer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'do@comparit.de' },
+  { name: 'Besnik Ejupi', role: 'Expert Software Developer', team: 'Integrations', office: 'Prishtina', languages: ['German', 'English', 'Albanian'], email: 'be@comparit.de' },
+  { name: 'Behar Simnica', role: 'Senior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'bs@comparit.de' },
+  { name: 'Çlirim Murati', role: 'Senior Software Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'cm@comparit.de' },
+  { name: 'Zgjim Kabashi', role: 'Senior Software Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'zk@comparit.de' },
+  { name: 'Korab Qarri', role: 'Senior Software Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'kq@comparit.de' },
+  { name: 'Lorik Haxhidauti', role: 'Senior Software Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'lh@comparit.de' },
+  { name: 'Shpend Bajgora', role: 'Senior Angular Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'sb2@comparit.de' },
+  { name: 'Tobias Schrank', role: 'Senior Software Developer', team: 'Development', office: 'Hamburg', languages: ['German', 'English'], email: 'ts@comparit.de' },
+  { name: 'Sebastian Thiede', role: 'Senior Developer', team: 'Development', office: 'Hamburg', languages: ['German', 'English'], email: 'st@comparit.de' },
+  { name: 'Timo Wickboldt', role: 'Senior Developer', team: 'Development', office: 'Hamburg', languages: ['German', 'English'], email: 'tw@comparit.de' },
+  { name: 'Philip Szalla', role: 'Senior Fullstack Developer', team: 'Development', office: 'Hamburg', languages: ['German', 'English'], email: 'ps@comparit.de' },
+  { name: 'Argim Kaliqi', role: 'Mid Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'argim.kaliqi@wisotech.de' },
+  { name: 'Lirim Imeri', role: 'Mid Software Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'li@comparit.de' },
+  { name: 'Ylli Kllokoqi', role: 'Mid Software Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English', 'German'], email: 'yk@comparit.de' },
+  { name: 'Levent Öztürk', role: 'Developer', team: 'Integrations', office: 'Remote (NRW)', languages: ['German', 'English'], email: 'loe@comparit.de' },
+  { name: 'Adil Jusufi', role: 'Junior Developer', team: 'Integrations', office: 'Prishtina', languages: ['German', 'Albanian'], email: 'aj@comparit.de' },
+  { name: 'Flutura Fejzullahu', role: 'Junior Developer', team: 'Integrations', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'ff@comparit.de' },
+  { name: 'Ardi Zariqi', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'az@comparit.de' },
+  { name: 'Ardit Gjyrevci', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'ag@comparit.de' },
+  { name: 'Arianit Gashi', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'aga@comparit.de' },
+  { name: 'Bleron Morina', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'bm@comparit.de' },
+  { name: 'Elvira Hasani', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'eh@comparit.de' },
+  { name: 'Venera Plakolli', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'vp@comparit.de' },
+  { name: 'Xheneta Hasani', role: 'Junior Developer', team: 'Development', office: 'Remote (Hessen)', languages: ['Albanian', 'English', 'German'], email: 'xh@comparit.de' },
+  { name: 'Ora Osmani', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'oo@comparit.de' },
+  { name: 'Adit Jusufi', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'aj2@comparit.de' },
+  { name: 'Dörte Meins', role: 'Product Owner', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'dm@comparit.de' },
+  { name: 'Corinna Sevin', role: 'Expert Business Analyst', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'cs@comparit.de' },
+  { name: 'Tanja Nitsch', role: 'Senior Business Analystin', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'tn@comparit.de' },
+  { name: 'Marvin Jordan', role: 'Senior Business Analyst SUHK', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'mj@comparit.de' },
+  { name: 'Michael Portius', role: 'Senior Business Analyst', team: 'Business Analysis', office: 'Remote (Thüringen)', languages: ['German', 'English'], email: 'mpo@comparit.de' },
+  { name: 'Eva Arfaoui-Holthey', role: 'Business Analystin SUHK', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'eho@comparit.de' },
+  { name: 'Chantal Voß', role: 'Business Analystin', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'cv@comparit.de' },
+  { name: 'Justin Kleinschmidt', role: 'Business Analyst Products', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'jk@comparit.de' },
+  { name: 'Lukas Hodel', role: 'Business Analyst', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'lho@comparit.de' },
+  { name: 'Ribana Harkensee', role: 'Referentin Products', team: 'Sales & Marketing', office: 'Hamburg', languages: ['German'], email: 'rh@comparit.de' },
+  { name: 'Markus Stüwer-Sklarek', role: 'Support 1st Level / Datenanalyst', team: 'Sales & Marketing', office: 'Remote (NRW)', languages: ['German'], email: 'mss@comparit.de' },
+  { name: 'Patrick von der Hagen', role: 'IT Spezialist', team: 'Management', office: 'Remote (Baden-Württemberg)', languages: ['German', 'English'], email: 'pvdh@comparit.de' },
+  { name: 'Christine Simon', role: 'Office Assistenz', team: 'Management', office: 'Hamburg', languages: ['German'], email: 'csi@comparit.de' },
+  { name: 'Sandra Thomm', role: 'Buchhaltung', team: 'Management', office: 'Remote (NRW)', languages: ['German'], email: 'sth@comparit.de' },
+  { name: 'Philipp Karkowski', role: 'Werkstudent', team: 'Management', office: 'Hamburg', languages: ['German'], email: 'pk@comparit.de' },
+  { name: 'Shkronja Babatinca', role: 'Assistentin Abrechnung Kosovo', team: 'Management', office: 'Remote (Baden-Württemberg)', languages: ['Albanian', 'German'], email: 'sb@comparit.de' },
 ];
 
 export const tools = [
   { name: 'Jira', url: 'comparit.atlassian.net', purpose: 'Ticketing & sprint tracking' },
-  { name: 'Confluence', url: 'comparit.atlassian.net/wiki', purpose: 'Documentation' },
+  { name: 'Confluence', url: 'comparit.atlassian.net/wiki', purpose: 'Documentation & wiki' },
   { name: 'Cypress', purpose: 'End-to-end testing' },
   { name: 'Git / GitHub', purpose: 'Version control' },
-  { name: 'Slack', purpose: 'Internal communication' },
+  { name: 'Microsoft Teams', purpose: 'Internal communication' },
   { name: 'Figma', purpose: 'Design' },
   { name: 'VS Code', purpose: 'Development' },
   { name: 'Postman', purpose: 'API testing' },
 ];
 
 export const projects = [
-  { name: 'cpit.APP', description: 'Main comparison platform' },
+  { name: 'cpit.APP', description: 'Main insurance comparison platform' },
   { name: 'cpit.PILOT', description: 'AI advisor tool' },
-  { name: 'cpit.SIGN', description: 'Digital signatures', team: ['Matthias'] },
-  {
-    name: 'UserCenter',
-    description: 'Admin configuration portal',
-    team: ['Ylle', 'Behar'],
-  },
-  { name: 'Comparison Engine', description: 'Core calculation logic' },
-  {
-    name: 'Advisory Docs',
-    description: 'Documentation generation',
-    team: ['Philipp', 'Besnik'],
-  },
+  { name: 'cpit.SIGN', description: 'Digital signatures' },
+  { name: 'UserCenter', description: 'Admin configuration portal' },
+  { name: 'Comparison Engine', description: 'Core tariff calculation logic' },
+  { name: 'Advisory Docs', description: 'Documentation generation' },
 ];
 
 export const meetings = [
-  {
-    name: 'Daily Standup',
-    when: '9:30 AM CET, weekdays',
-    mandatory: true,
-  },
-  {
-    name: 'Sprint Planning',
-    when: 'Every 2 weeks, Monday 10:00 AM CET',
-    mandatory: true,
-  },
-  {
-    name: 'Sprint Retro',
-    when: 'Every 2 weeks, Friday 2:00 PM CET',
-    mandatory: true,
-  },
-  {
-    name: 'All Hands',
-    when: 'Monthly, first Thursday 11:00 AM CET',
-    mandatory: false,
-  },
+  { name: 'Daily Standup', when: '9:30 AM CET, weekdays', mandatory: true },
+  { name: 'Sprint Planning', when: 'Every 2 weeks, Monday 10:00 AM CET', mandatory: true },
+  { name: 'Sprint Retro', when: 'Every 2 weeks, Friday 2:00 PM CET', mandatory: true },
+  { name: 'All Hands', when: 'Monthly, first Thursday 11:00 AM CET', mandatory: false },
 ];
 
 export const policies = {
-  homeOffice:
-    'Home office is flexible. Core hours are 10:00–15:00 CET — be reachable on Slack during this window.',
+  homeOffice: 'Home office is flexible. Core hours are 10:00–15:00 CET — be reachable on Teams during this window.',
   leave: 'Submit leave requests at least 2 weeks in advance via Jira or ask Laimi.',
-  sickDays: 'Notify your team lead and post in #sick-days on Slack by 9:00 AM.',
-  expenses:
-    'Submit expenses up to €25 directly in the expense tool. Larger amounts need prior approval from your team lead.',
+  sickDays: 'Notify your team lead by 9:00 AM via Teams.',
+  expenses: 'Submit expenses up to €25 directly. Larger amounts need prior approval from your team lead.',
 };
 
 export const holidays = {
@@ -182,20 +131,27 @@ export const abbreviations = {
   API: 'Application Programming Interface',
   CI: 'Continuous Integration',
   CD: 'Continuous Deployment',
+  SUHK: 'Selbstständige, Unternehmer, Heilberufe, Kammerberufe',
+  GF: 'Geschäftsführung — Management / Executive',
+  CEO: 'Chief Executive Officer — Matthias Brauch',
+  COO: 'Chief Operating Officer — Axel Karkowski',
+  CTO: 'Chief Technology Officer — Ylle Dragaj',
+  CPO: 'Chief Product Officer — Ellen Ludwig',
+  CMO: 'Chief Marketing Officer — Oliver Fink',
+  CSO: 'Chief Sales Officer — Alexander Lipp',
+  CPMO: 'Chief Product Marketing Officer — Martina Pirrung',
 };
 
 export const contacts = {
-  IT: 'Post in **#it-support** on Slack — the team monitors it throughout the day.',
-  HR: '**Laimi** (Hamburg) for office/ops questions. For formal HR matters: **hr@comparit.de**.',
-  Operations: '**Laimi** handles office management, events, and day-to-day ops.',
-  QA: '**Nina** is the QA Lead in Hamburg. **Drilon** is the Cypress expert in Prishtina.',
-  Product: '**Ylle** is the Product Manager for UserCenter, based in Prishtina.',
-  Design: 'Design questions? Check **Figma** first, or ask in the relevant project channel on Slack.',
+  IT: '**Patrick von der Hagen** is the IT Spezialist (Remote BW). For quick issues message the IT channel on **Teams**.',
+  HR: '**Laimi Pester** for day-to-day questions. Formal HR matters: **hr@comparit.de**.',
+  Operations: '**Laimi Pester** (Assistentin der GF) handles office management and executive support.',
+  QA: '**Drilon Osmanaj** is the QA Engineer in Prishtina.',
+  Product: '**Ellen Ludwig** (CPO, Hamburg) and **Dörte Meins** (Product Owner, Hamburg).',
+  Management: '**Matthias Brauch** (CEO) · **Axel Karkowski** (COO) · **Ylle Dragaj** (CTO).',
+  Accounting: '**Sandra Thomm** (Buchhaltung, Remote NRW) · **Shkronja Babatinca** (Kosovo billing, Remote BW).',
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Category cards shown on the Welcome screen
-// ─────────────────────────────────────────────────────────────────────────────
 export const categories = [
   {
     id: 'people',
@@ -204,10 +160,10 @@ export const categories = [
     label: 'People & Teams',
     sublabel: 'Find who works on what',
     suggestions: [
-      'Who works on cpit.SIGN?',
-      'Who in Prishtina speaks German?',
-      "Who's the QA lead?",
-      'Who handles the API layer?',
+      'Who is the CEO of comparit?',
+      'Who speaks Albanian in Hamburg?',
+      'Who is on the Development team?',
+      'Who handles IT issues?',
     ],
   },
   {
@@ -254,12 +210,12 @@ export const categories = [
     emoji: '🏢',
     iconBg: '#F0F0F0',
     label: 'Office & Operations',
-    sublabel: 'Hamburg, Prishtina, events',
+    sublabel: 'Hamburg, Prishtina, remote',
     suggestions: [
-      'Who handles office events?',
-      'How do expense submissions work?',
+      'Who works in Hamburg?',
+      'Who is fully remote?',
       "What's the home-office policy?",
-      'Who do I ask about HR?',
+      'Who do I ask about expenses?',
     ],
   },
   {
@@ -272,7 +228,7 @@ export const categories = [
       'What does BU mean?',
       "What's a TI?",
       'What does cpit stand for?',
-      "What's the difference between LV and KV?",
+      'What does SUHK mean?',
     ],
   },
   {

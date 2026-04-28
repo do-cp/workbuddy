@@ -3,6 +3,7 @@ import Header from './components/Header.jsx';
 import Welcome from './components/Welcome.jsx';
 import Messages from './components/Messages.jsx';
 import Composer from './components/Composer.jsx';
+import OrgChart from './components/OrgChart.jsx';
 import { getLocalAnswer } from './services/localAnswerService.js';
 import { getAiAnswer, isAiEnabled } from './services/aiService.js';
 
@@ -43,6 +44,7 @@ export default function App() {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showOrgChart, setShowOrgChart] = useState(false);
 
   const hasMessages = messages.length > 0;
   const viewingChat = hasMessages && !showWelcome;
@@ -87,7 +89,8 @@ export default function App() {
 
   return (
     <div style={shellStyle}>
-      <Header onNewChat={startNewChat} hasMessages={viewingChat} />
+      {showOrgChart && <OrgChart onClose={() => setShowOrgChart(false)} />}
+      <Header onNewChat={startNewChat} hasMessages={viewingChat} onOrgChart={() => setShowOrgChart(true)} />
       <div style={mainStyle}>
         {viewingChat ? (
           <Messages messages={messages} isTyping={isTyping} onPickFollow={sendMessage} />

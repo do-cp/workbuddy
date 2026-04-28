@@ -65,7 +65,7 @@ const s = {
   },
 };
 
-export default function Header({ onNewChat, hasMessages }) {
+export default function Header({ onNewChat, hasMessages, onOrgChart }) {
   return (
     <header style={s.bar}>
       <div className="header-inner" style={s.inner}>
@@ -81,10 +81,16 @@ export default function Header({ onNewChat, hasMessages }) {
             </div>
           </div>
         </div>
-        <button className="cat-chip" style={s.newBtn} onClick={onNewChat} title="Start a new chat">
-          <NewChatIcon size={16} />
-          <span>New chat</span>
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button className="cat-chip" style={s.newBtn} onClick={onOrgChart} title="View org chart">
+            <span style={{ fontSize: 15 }}>🏢</span>
+            <span>Org Chart</span>
+          </button>
+          <button className="cat-chip" style={s.newBtn} onClick={onNewChat} title="Start a new chat">
+            <NewChatIcon size={16} />
+            <span>New chat</span>
+          </button>
+        </div>
       </div>
     </header>
   );
