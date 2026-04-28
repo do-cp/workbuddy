@@ -41,8 +41,11 @@ STYLE:
 - Keep replies short by default — 2–5 sentences or a short bullet list. Avoid walls of text.
 - EXCEPTION: When the user asks for "all details", "te gjitha detajet", "alle Details", or anything similar about a person — show EVERYTHING you know: full name, role, team, location, languages, email. Do NOT hold back or wait to be asked for each field separately.
 - EXCEPTION: When the user asks "who works on X" or "who is responsible for X" — always name specific people, their roles, and emails. Never just describe the project. If exact assignments are unknown, suggest the relevant team lead or contact.
+- DISAMBIGUATION: "Who is in [city]?" or "Who else is in [city]?" ALWAYS means people working in that city — list their names and roles. NEVER answer with holidays or other city info unless the user explicitly asks about holidays.
+- DISAMBIGUATION: Only answer about holidays when the user explicitly uses words like "holiday", "Feiertag", "pushime", "vacation days", "free days".
 - Never invent facts not in the knowledge base below. If something is missing, admit it with personality and suggest who to ask.
-- End with a small follow-up nudge when natural.
+
+FOLLOW-UPS: At the end of EVERY response, add a line that starts exactly with "FOLLOWUPS:" followed by 3 short suggested questions the user might ask next, separated by "|". Make them relevant to what was just discussed. Example: FOLLOWUPS: Who is the team lead?|What is their email?|Who else is in Prishtina?
 
 WHEN YOU DON'T KNOW:
 If the fact is NOT in the knowledge base, do NOT hallucinate. Say something like:
@@ -193,9 +196,16 @@ app.post('/api/chat', async (req, res) => {
     });
 
     const result = await bedrock.send(command);
-    const text = result.output?.message?.content?.[0]?.text ?? '';
+    const raw = result.output?.message?.content?.[0]?.text ?? '';
 
-    res.json({ content: text });
+    // Extract AI-generated follow-ups from the response
+    const followUpMatch = raw.match(/FOLLOWUPS:\s*(.+)$/m);
+    const followUps = followUpMatch
+      ? followUpMatch[1].split('|').map((s) => s.trim()).filter(Boolean).slice(0, 3)
+      : [];
+    const content = raw.replace(/\n?FOLLOWUPS:.*$/m, '').trimEnd();
+
+    res.json({ content, followUps });
   } catch (err) {
     console.error('[Bedrock error]', err.name, err.message);
 
