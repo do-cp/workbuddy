@@ -17,9 +17,6 @@ export async function getAiAnswer(messages) {
   const data = await res.json();
 
   if (!res.ok) {
-    if (res.status === 401 || data.error === 'AWS_EXPIRED') {
-      throw new Error('AWS_EXPIRED');
-    }
     throw new Error(data.error || `Server error ${res.status}`);
   }
 
