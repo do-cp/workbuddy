@@ -131,6 +131,26 @@ export const WorkBuddyAvatar = ({ size = 30 }) => {
   );
 };
 
+export const BuildingIcon = ({ size = 22 }) => (
+  <Icon size={size}>
+    <rect x="3" y="8" width="14" height="13" stroke="#1B1C50" strokeWidth="1.8" strokeLinejoin="miter"/>
+    <path d="M17 11 L21 11 L21 21 L17 21" stroke="#1B1C50" strokeWidth="1.8" strokeLinejoin="miter"/>
+    <path d="M3 8 L10 3 L17 8" stroke="#1B1C50" strokeWidth="1.8" strokeLinejoin="miter"/>
+    <rect x="7" y="14" width="3" height="3" fill="#0AB7A7"/>
+    <rect x="12" y="14" width="3" height="3" stroke="#1B1C50" strokeWidth="1.3"/>
+    <rect x="9" y="17" width="4" height="4" fill="#1B1C50"/>
+  </Icon>
+);
+
+export const MegaphoneIcon = ({ size = 22 }) => (
+  <Icon size={size}>
+    <path d="M3 9 L3 15 L7 15 L7 9 Z" stroke="#1B1C50" strokeWidth="1.8" strokeLinejoin="miter"/>
+    <path d="M7 10 L18 5 L18 19 L7 14 Z" stroke="#1B1C50" strokeWidth="1.8" strokeLinejoin="miter"/>
+    <path d="M7 15 L9 21" stroke="#0AB7A7" strokeWidth="1.8" strokeLinecap="square"/>
+    <circle cx="20" cy="12" r="2" fill="#0AB7A7"/>
+  </Icon>
+);
+
 export const ICON_MAP = {
   people: PeopleIcon,
   tools: ToolsIcon,
@@ -138,4 +158,6 @@ export const ICON_MAP = {
   clock: ClockIcon,
   phone: PhoneIcon,
   doc: DocIcon,
+  building: BuildingIcon,
+  megaphone: MegaphoneIcon,
 };

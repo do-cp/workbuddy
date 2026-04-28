@@ -81,12 +81,10 @@ export default function Header({ onNewChat, hasMessages }) {
             </div>
           </div>
         </div>
-        {hasMessages && (
-          <button className="cat-chip" style={s.newBtn} onClick={onNewChat} title="Start a new chat">
-            <NewChatIcon size={16} />
-            <span>New chat</span>
-          </button>
-        )}
+        <button className="cat-chip" style={s.newBtn} onClick={onNewChat} title="Start a new chat">
+          <NewChatIcon size={16} />
+          <span>New chat</span>
+        </button>
       </div>
     </header>
   );

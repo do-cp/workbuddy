@@ -32,7 +32,7 @@ const s = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+    gridTemplateColumns: 'repeat(2, 1fr)',
     gap: 10,
   },
   card: {

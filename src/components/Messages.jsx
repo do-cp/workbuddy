@@ -164,6 +164,27 @@ function renderMarkdown(text) {
   return elements;
 }
 
+function UserAvatar() {
+  return (
+    <div style={{
+      width: 32,
+      height: 32,
+      borderRadius: '50%',
+      background: 'var(--color-dark-blue)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0,
+      marginBottom: 2,
+    }}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="8" r="4" fill="#FFFFFF" opacity="0.9"/>
+        <path d="M4 20 C4 16 7.6 13 12 13 C16.4 13 20 16 20 20" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" opacity="0.9"/>
+      </svg>
+    </div>
+  );
+}
+
 function MessageBubble({ msg }) {
   const isUser = msg.role === 'user';
   const isError = msg.error;
@@ -180,6 +201,7 @@ function MessageBubble({ msg }) {
       >
         {isUser ? renderInline(msg.content) : renderMarkdown(msg.content)}
       </div>
+      {isUser && <UserAvatar />}
     </div>
   );
 }
