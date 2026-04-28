@@ -88,41 +88,13 @@ export const NewChatIcon = ({ size = 18 }) => (
 );
 
 export const WorkBuddyAvatar = ({ size = 30 }) => (
-  <svg width={size} height={size} viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
-    {/* Warm beige background */}
-    <circle cx="100" cy="100" r="96" fill="#F0EADA" />
-
-    {/* Tentacles — drawn first so body sits on top */}
-    <path d="M67 120 C 58 133 67 145 58 159 C 51 170 58 179 53 188" stroke="#48ADA3" strokeWidth="9" fill="none" strokeLinecap="round"/>
-    <path d="M78 124 C 70 137 78 149 70 163 C 64 174 70 183 65 191" stroke="#48ADA3" strokeWidth="9" fill="none" strokeLinecap="round"/>
-    <path d="M89 126 C 83 139 90 151 84 165 C 78 176 84 184 80 192" stroke="#48ADA3" strokeWidth="9" fill="none" strokeLinecap="round"/>
-    <path d="M100 127 C 96 140 101 152 97 166 C 93 177 98 185 95 193" stroke="#48ADA3" strokeWidth="9" fill="none" strokeLinecap="round"/>
-    <path d="M111 126 C 117 139 110 151 116 165 C 122 176 116 184 120 192" stroke="#48ADA3" strokeWidth="9" fill="none" strokeLinecap="round"/>
-    <path d="M122 124 C 130 137 122 149 130 163 C 136 174 130 183 135 191" stroke="#48ADA3" strokeWidth="9" fill="none" strokeLinecap="round"/>
-    <path d="M133 120 C 142 133 133 145 142 159 C 149 170 142 179 147 188" stroke="#48ADA3" strokeWidth="9" fill="none" strokeLinecap="round"/>
-
-    {/* Body / head */}
-    <circle cx="100" cy="88" r="47" fill="#5CC0B6"/>
-
-    {/* Subtle highlight top-left */}
-    <ellipse cx="83" cy="68" rx="19" ry="12" fill="#FFFFFF" opacity="0.18"/>
-
-    {/* Sunglasses — left lens */}
-    <rect x="55" y="84" width="38" height="23" rx="7" fill="#1A1A2E"/>
-    {/* Sunglasses — right lens */}
-    <rect x="107" y="84" width="38" height="23" rx="7" fill="#1A1A2E"/>
-    {/* Bridge */}
-    <rect x="93" y="90" width="14" height="7" rx="3" fill="#1A1A2E"/>
-    {/* Temple arms */}
-    <path d="M55 95 C 44 95 37 91 30 89" stroke="#1A1A2E" strokeWidth="4.5" fill="none" strokeLinecap="round"/>
-    <path d="M145 95 C 156 95 163 91 170 89" stroke="#1A1A2E" strokeWidth="4.5" fill="none" strokeLinecap="round"/>
-    {/* Lens glint */}
-    <rect x="60" y="87" width="13" height="7" rx="3" fill="#FFFFFF" opacity="0.14"/>
-    <rect x="112" y="87" width="13" height="7" rx="3" fill="#FFFFFF" opacity="0.14"/>
-
-    {/* Mouth — subtle neutral smirk */}
-    <path d="M86 117 Q100 124 114 117" stroke="#3A9990" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
-  </svg>
+  <img
+    src="/assets/mascot.png"
+    alt="WorkBuddy"
+    width={size}
+    height={size}
+    style={{ display: 'block', borderRadius: '50%', objectFit: 'cover' }}
+  />
 );
 
 export const BuildingIcon = ({ size = 22 }) => (
