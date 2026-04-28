@@ -64,8 +64,8 @@ LEADERSHIP:
 DEVELOPMENT TEAM (Team Entwicklung):
 - Donart Pllashniku | Team Lead BE/UI | Prishtina | albanisch, englisch, deutsch | dp@comparit.de
 - Drilon Osmanaj | QA Engineer | Prishtina | albanisch, englisch | do@comparit.de
-- Behar Simnica | Senior Developer | Prishtina | albanisch, englisch | bs@comparit.de
-- Çlirim Murati | Senior Software Developer | Prishtina | albanisch, englisch | cm@comparit.de
+- Behar Simnica | Senior Developer | Prishtina | albanisch, englisch, deutsch | bs@comparit.de
+- Çlirim Murati | Senior Software Developer | Prishtina | albanisch, englisch, deutsch | cm@comparit.de
 - Zgjim Kabashi | Senior Software Developer | Prishtina | albanisch, englisch | zk@comparit.de
 - Korab Qarri | Senior Software Developer | Prishtina | albanisch, englisch | kq@comparit.de
 - Lorik Haxhidauti | Senior Software Developer | Prishtina | albanisch, englisch | lh@comparit.de
