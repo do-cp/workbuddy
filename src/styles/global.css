@@ -104,3 +104,8 @@ button {
   .header-inner { padding: 0 16px !important; }
   .welcome-title { font-size: 28px !important; }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

@@ -56,27 +56,44 @@ function containsWord(query, ...words) {
 function tryPeople(query, lang) {
   const lq = q(query);
 
-  // "Who speaks Albanian / German / English?"
-  const langMatch = lq.match(/\b(albanian|shqip|german|deutsch|english|englisch)\b/);
+  // "Who speaks Albanian / German / English?" — optionally filtered by office
+  const langMatch = lq.match(/\b(albanian|albanisch|shqip|shqiptar|german|deutsch|gjermanisht|english|englisch|anglisht)\b/);
   if (langMatch && (contains(lq, 'speak', 'sprich', 'sprecht', 'flet', 'language', 'sprach'))) {
     const target = langMatch[1].toLowerCase();
-    const map = { albanian: 'Albanian', shqip: 'Albanian', german: 'German', deutsch: 'German', english: 'English', englisch: 'English' };
+    const map = { albanian: 'Albanian', albanisch: 'Albanian', shqip: 'Albanian', shqiptar: 'Albanian', german: 'German', deutsch: 'German', gjermanisht: 'German', english: 'English', englisch: 'English', anglisht: 'English' };
     const targetLang = map[target];
     // Only match sourced (documented) languages — null-src entries are filtered out
-    const matched = people.filter((p) =>
+    let matched = people.filter((p) =>
       langNames(p).some((name) => name.toLowerCase() === targetLang.toLowerCase())
     );
+    // If a specific office is mentioned, narrow to that location
+    const lqNormLang = lq.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const locationFilter = lqNormLang.match(/\b(hamburg|prishtina|prishtine|pristina|kosovo|kosove)\b/);
+    if (locationFilter) {
+      const officeLabel = locationFilter[1].toLowerCase() === 'hamburg' ? 'Hamburg' : 'Prishtina';
+      const inOffice = matched.filter((p) => p.office === officeLabel);
+      if (!inOffice.length) {
+        return {
+          answer: `No one in **${officeLabel}** has **${targetLang}** documented as a spoken language. 😊`,
+          followUps: followUpsFor('people', lang),
+        };
+      }
+      matched = inOffice;
+    }
     if (!matched.length) return null;
     const names = matched.map((p) => `${bold(p.name)} (${p.office})`).join(', ');
     const followUps = followUpsFor('people', lang);
     return { answer: `Team members who speak **${targetLang}**: ${names}.`, followUps };
   }
 
-  // "Who is in Prishtina / Hamburg?"
-  const officeMatch = lq.match(/\b(prishtina|priština|pristina|hamburg|kosovo)\b/);
-  if (officeMatch) {
+  // "Who is in Prishtina / Hamburg?" — requires people-intent AND no holiday keyword
+  // Normalize diacritics first so ë→e works with \b word boundaries
+  const lqNorm = lq.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const officeMatch = lqNorm.match(/\b(prishtina|prishtine|pristina|hamburg|kosovo|kosove)\b/);
+  const hasPeopleIntent = /\b(who|wer|kush|team|works?|arbeitet|colleague|people|staff|members?|show|list|zeig|punon|punojnë)\b/i.test(lq);
+  if (officeMatch && hasPeopleIntent && !contains(lq, 'holiday', 'feiertag', 'festtag', 'ferien', 'feste', 'pushime', 'bajram', 'festat')) {
     const officeKey = officeMatch[1].toLowerCase();
-    const officeLabel = officeKey.includes('prishtina') || officeKey.includes('pristina') || officeKey.includes('priština') || officeKey === 'kosovo'
+    const officeLabel = ['prishtina','prishtine','pristina','priština','kosovo','kosove'].some(v => officeKey.includes(v))
       ? 'Prishtina'
       : 'Hamburg';
     const matched = people.filter((p) => p.office === officeLabel);
@@ -118,15 +135,28 @@ function tryPeople(query, lang) {
     }
   }
 
-  // "Who is Nina / Drilon / ..." — specific person lookup
+  // "Who is Nina / Drilon / ..." — specific person lookup (full name, then first name)
   for (const p of people) {
     if (lq.includes(p.name.toLowerCase())) {
       return { answer: personCard(p), followUps: followUpsFor('people', lang) };
     }
   }
+  // First-name fallback (e.g. "Who is Nina?")
+  const firstNameMatches = people.filter((p) => {
+    const first = p.name.split(' ')[0].toLowerCase();
+    return first.length > 2 && lq.includes(first);
+  });
+  if (firstNameMatches.length === 1) {
+    return { answer: personCard(firstNameMatches[0]), followUps: followUpsFor('people', lang) };
+  }
+  if (firstNameMatches.length > 1) {
+    const lines = firstNameMatches.map((p) => `• ${bold(p.name)} — ${p.role}, ${p.office}`).join('\n');
+    return { answer: `Found multiple people matching that name:\n\n${lines}`, followUps: followUpsFor('people', lang) };
+  }
 
-  // Generic "who" or "team" query
+  // Generic "who" or "team" query — but let tryProjects handle project-specific queries
   if (contains(lq, 'who', 'wer', 'kush', 'team', 'colleague', 'kollege', 'everyone', 'alle')) {
+    if (contains(lq, 'cpit.', 'sign', 'pilot', 'usercenter', 'advisory', 'comparison engine')) return null;
     const lines = people.map((p) => `• ${bold(p.name)} — ${p.role}, ${p.office}`).join('\n');
     return { answer: `Here's the team at **comparit**:\n\n${lines}`, followUps: followUpsFor('people', lang) };
   }
@@ -217,12 +247,12 @@ function tryMeetings(query, lang) {
 
 function tryPolicies(query, lang) {
   const lq = q(query);
-  if (!contains(lq, 'policy', 'policies', 'home office', 'homeoffice', 'vacation', 'urlaub', 'leave', 'sick', 'krank', 'expense', 'kosten', 'rule', 'regel', 'antrag', 'request')) return null;
+  if (!contains(lq, 'policy', 'policies', 'home office', 'homeoffice', 'vacation', 'urlaub', 'leave', 'sick', 'krank', 'expense', 'kosten', 'rule', 'regel', 'antrag', 'request', 'leje', 'pushim', 'pushime', 'sëmurë', 'semure', 'shpenzime')) return null;
 
   if (contains(lq, 'home office', 'homeoffice', 'remote', 'wfh', 'work from home')) {
     return { answer: policies.homeOffice, followUps: followUpsFor('rules', lang) };
   }
-  if (contains(lq, 'vacation', 'urlaub', 'leave', 'annual leave', 'holiday request', 'urlaubsantrag')) {
+  if (contains(lq, 'vacation', 'urlaub', 'leave', 'annual leave', 'holiday request', 'urlaubsantrag', 'leje', 'pushim')) {
     return { answer: policies.leave, followUps: followUpsFor('leave', lang) };
   }
   if (contains(lq, 'sick', 'krank', 'illness', 'ill', 'sick day', 'sick leave')) {
@@ -246,9 +276,16 @@ function tryPolicies(query, lang) {
 
 function tryHolidays(query, lang) {
   const lq = q(query);
-  if (!contains(lq, 'holiday', 'feiertag', 'public holiday', 'bank holiday', 'festtag', 'ferien', 'feste', 'pushime', 'bajram', 'kosova', 'kosovo', 'germany', 'deutschland', 'hamburg')) return null;
+  // Require an explicit holiday keyword OR a Kosovo reference.
+  // Location words alone (hamburg, germany) must NOT trigger this — they belong to tryPeople/tryCompany.
+  // People-intent queries ("who works in Kosovo?") must never be hijacked by this handler.
+  const hasHolidayWord = contains(lq, 'holiday', 'feiertag', 'public holiday', 'bank holiday', 'festtag', 'ferien', 'feste', 'pushime', 'bajram', 'festat', 'festave');
+  const hasKosovo = contains(lq, 'kosova', 'kosovo', 'kosovë');
+  if (!hasHolidayWord && !hasKosovo) return null;
+  // If query has people-intent words, route to tryPeople instead
+  if (/\b(who|wer|kush|team|works|arbeitet|work|people)\b/i.test(lq)) return null;
 
-  const isKosovo = contains(lq, 'kosovo', 'kosova', 'prishtina', 'kosovo');
+  const isKosovo = contains(lq, 'kosovo', 'kosova', 'kosovë', 'prishtina');
   const isGermany = contains(lq, 'germany', 'deutschland', 'hamburg', 'german');
 
   if (isKosovo && !isGermany) {
@@ -290,7 +327,7 @@ function tryAbbreviations(query, lang) {
   }
 
   if (!contains(lq, 'abbreviation', 'abkürzung', 'stand for', 'short for', 'steht für', 'kürzel', 'glossary') &&
-      !containsWord(lq, 'mean', 'bedeutet', 'what is', 'was ist', 'was bedeutet')) return null;
+      !containsWord(lq, 'mean', 'bedeutet', 'was bedeutet')) return null;
 
   // All abbreviations
   const lines = Object.entries(abbreviations).map(([abbr, meaning]) => `• **${abbr}** — ${meaning}`).join('\n');
@@ -450,11 +487,11 @@ export async function getLocalAnswer(query) {
     tryMeetings(query, lang) ||
     tryHolidays(query, lang) ||
     tryPolicies(query, lang) ||
+    tryPeople(query, lang) ||
     tryAbbreviations(query, lang) ||
     tryContacts(query, lang) ||
     tryTools(query, lang) ||
     tryProjects(query, lang) ||
-    tryPeople(query, lang) ||
     tryCompany(query, lang) ||
     fallbackAnswer(lang)
   );

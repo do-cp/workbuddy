@@ -4,6 +4,7 @@ import Welcome from './components/Welcome.jsx';
 import Messages from './components/Messages.jsx';
 import Composer from './components/Composer.jsx';
 import OrgChart from './components/OrgChart.jsx';
+import PasswordGate, { isUnlocked } from './components/PasswordGate.jsx';
 import { getLocalAnswer } from './services/localAnswerService.js';
 import { getAiAnswer, isAiEnabled } from './services/aiService.js';
 
@@ -19,6 +20,19 @@ const mainStyle = {
   display: 'flex',
   flexDirection: 'column',
   minHeight: 0,
+};
+
+const demoBannerStyle = {
+  background: '#FFF8E6',
+  borderBottom: '1px solid #F5C842',
+  padding: '6px 24px',
+  textAlign: 'center',
+  fontSize: 12.5,
+  color: '#7A5C00',
+  fontWeight: 500,
+  letterSpacing: '0.01em',
+  lineHeight: 1.4,
+  flexShrink: 0,
 };
 
 const STORAGE_KEY = 'workbuddy_messages';
@@ -55,10 +69,16 @@ async function getAnswer(query, messages) {
 }
 
 export default function App() {
+  const [unlocked, setUnlocked] = useState(isUnlocked);
   const [messages, setMessages] = useState(loadMessages);
   const [isTyping, setIsTyping] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showOrgChart, setShowOrgChart] = useState(false);
+
+  if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />;
+
+  // Brief fade-in so the transition from gate to app is smooth
+  const appStyle = { ...shellStyle, animation: 'fadeIn 0.25s ease' };
 
   const hasMessages = messages.length > 0;
   const viewingChat = hasMessages && !showWelcome;
@@ -105,7 +125,7 @@ export default function App() {
   }, [messages.length]);
 
   return (
-    <div style={shellStyle}>
+    <div style={appStyle}>
       {showOrgChart && <OrgChart onClose={() => setShowOrgChart(false)} />}
       <Header
         onNewChat={startNewChat}
@@ -113,6 +133,9 @@ export default function App() {
         onOrgChart={() => setShowOrgChart(true)}
         onLogoClick={() => { if (hasMessages) setShowWelcome(true); }}
       />
+      <div style={demoBannerStyle}>
+        🚧 <strong>Demo version</strong> — Internal data is limited and still being validated. Not for production use.
+      </div>
       <div style={mainStyle}>
         {viewingChat ? (
           <Messages messages={messages} isTyping={isTyping} onPickFollow={sendMessage} />
