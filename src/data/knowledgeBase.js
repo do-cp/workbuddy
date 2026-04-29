@@ -143,11 +143,21 @@ export const devTeams = {
   'QA/Sonstige':  ['Drilon Osmanaj'],
 };
 
-// ── Business Analysis assignments per insurance area ──────────────────────────
+// ── Business Analysis assignments per insurance area ─────────────────────────
+// Source: Teams_Projekte_Anteile_2026.xlsx → sheet "Fachbereich-Aufteilung"
+// These are FACHBEREICH (BA) contacts — not developer teams!
 export const baAssignments = {
-  'Wohngebäude / Hausrat': { primary: 'Justin Kleinschmidt', backup: 'Dörte Meins' },
-  'SUHK / HR / LV':        { primary: 'Marvin Jordan',       backup: 'Eva Arfaoui-Holthey' },
-  'KFZ / PHV / RS':        { primary: 'Tanja Nitsch',        backup: 'Michael Portius' },
+  'WG – Wohngebäude':              { primary: 'Justin Kleinschmidt', backup: 'Dörte Meins' },
+  'HR – Hausrat':                   { primary: 'Marvin Jordan',       backup: 'Eva Arfaoui-Holthey' },
+  'PHV – Private Haftpflicht':      { primary: 'Marvin Jordan',       backup: 'Eva Arfaoui-Holthey' },
+  'THV – Tierhalterhaftpflicht':    { primary: 'Marvin Jordan',       backup: 'Eva Arfaoui-Holthey' },
+  'RS – Rechtsschutz':              { primary: 'Justin Kleinschmidt', backup: 'Dörte Meins' },
+  'KFZ PKW':                        { primary: 'Eva Arfaoui-Holthey', backup: 'Marvin Jordan' },
+  'KFZ Motorrad':                   { primary: 'Eva Arfaoui-Holthey', backup: 'Justin Kleinschmidt' },
+  'KFZ Anhänger':                   { primary: 'Justin Kleinschmidt', backup: 'Eva Arfaoui-Holthey' },
+  'BU / RiLV (Lebensversicherung)': { primary: 'Tanja Nitsch',        backup: 'Michael Portius' },
+  'Dread Disease':                  { primary: 'Tanja Nitsch',        backup: 'Justin Kleinschmidt' },
+  'LV Produktrating':               { primary: 'Lukas Hodel',         backup: 'Tanja Nitsch' },
 };
 
 export const meetings = [
