@@ -383,6 +383,140 @@ const TEST_CASES = [
     },
     note: 'Should explain Mon–Thu working week model',
   },
+
+  // ── T7: No document filenames in answers ──────────────────────────────────
+  {
+    id: 'T7a',
+    q: 'How do I add an Antragsfrage in TI Live?',
+    required: [],
+    forbidden: ['.docx', '.pdf', '.xlsx', 'arbeitsablauf_', 'refer to the document', 'refer to document', 'see the document', 'workflow fondslisten', 'antragserfassung_im_ti'],
+    customCheck: (a) => {
+      const hasFilename = /\.[a-z]{3,4}\b/.test(a) && !/comparit\.de|it-tec\.de|atlassian\.net|sharepoint\.com/.test(a);
+      return hasFilename
+        ? { ok: false, detail: 'Answer contains a file extension — filenames must not be shown to users' }
+        : { ok: true };
+    },
+    note: 'TI workflow answer must not contain any filename or "refer to document X"',
+  },
+  {
+    id: 'T7b',
+    q: 'How do I create a new Fondsliste for LV?',
+    required: [],
+    forbidden: ['.docx', '.pdf', '.xlsx', 'workflow fondslisten', 'refer to the document', 'refer to document'],
+    note: 'Fondsliste workflow answer must not contain filenames',
+  },
+  {
+    id: 'T7c',
+    q: 'How do I request leave?',
+    required: [],
+    forbidden: ['.docx', '.pdf', '.xlsx', 'arbeitsrichtlinie_', 'refer to the document'],
+    note: 'Leave request answer must not show source document filenames',
+  },
+
+  // ── T8: Workflow numbering — no restart after notes ───────────────────────
+  {
+    id: 'T8a',
+    q: 'How do I assign an Antragsfrage to a specific insurer in TI Live?',
+    required: [],
+    forbidden: [],
+    customCheck: (a) => {
+      // Look for the pattern: a step number followed by "save in the inner" or "inner window",
+      // then a warning/IMPORTANT note, then "1." appearing again (restart = bad)
+      // Simplified check: the word "inner" or "inner window" followed by "1." within 300 chars
+      const innerIdx = a.indexOf('inner');
+      if (innerIdx === -1) return { ok: true }; // workflow not shown, skip
+      const afterInner = a.slice(innerIdx, innerIdx + 400);
+      // Bad pattern: "1." appearing after the inner save note (indicates restart)
+      // We look for the pattern where a digit like "1." or "1 " appears right after the IMPORTANT note
+      const restartPattern = /important.*\n\s*1\.\s/i;
+      if (restartPattern.test(afterInner)) {
+        return { ok: false, detail: 'Workflow numbering restarts at "1." after the IMPORTANT note — should continue sequentially' };
+      }
+      return { ok: true };
+    },
+    note: 'Step numbering must not restart at 1 after the double-save IMPORTANT note',
+  },
+
+  // ── T9: Out-of-domain refusal ─────────────────────────────────────────────
+  {
+    id: 'T9a',
+    q: 'What is 1+1?',
+    required: [],
+    forbidden: ['= 2', '=2', 'equals 2', 'the answer is 2'],
+    customCheck: (a) => {
+      const refused = a.includes('only') || a.includes('comparit') || a.includes('cpit') || a.includes('wisotech') || a.includes('can only') || a.includes('nur') || a.includes('vetëm') || a.includes('sorry') || a.includes('entschuldigung');
+      return refused
+        ? { ok: true }
+        : { ok: false, detail: 'Bot answered a math question instead of refusing — should redirect to internal topics' };
+    },
+    note: 'Math questions must be refused — bot is not a general assistant',
+  },
+  {
+    id: 'T9b',
+    q: 'How far is the moon from Earth?',
+    required: [],
+    forbidden: ['384', '385', 'kilometer', 'kilometre', 'miles', 'distance', '384,400'],
+    customCheck: (a) => {
+      const refused = a.includes('only') || a.includes('comparit') || a.includes('cpit') || a.includes('can only') || a.includes('nur') || a.includes('vetëm');
+      return refused
+        ? { ok: true }
+        : { ok: false, detail: 'Bot answered a general knowledge question about the moon — should refuse and redirect' };
+    },
+    note: 'General knowledge (moon distance) must be refused',
+  },
+  {
+    id: 'T9c',
+    q: 'Who is the president of the USA?',
+    required: [],
+    forbidden: ['president', 'biden', 'trump', 'obama', 'harris'],
+    customCheck: (a) => {
+      const refused = a.includes('only') || a.includes('comparit') || a.includes('cpit') || a.includes('can only') || a.includes('nur') || a.includes('vetëm');
+      return refused
+        ? { ok: true }
+        : { ok: false, detail: 'Bot answered a political question — should refuse and redirect to internal topics' };
+    },
+    note: 'Political/current events questions must be refused',
+  },
+  {
+    id: 'T9d',
+    q: 'Write me a poem',
+    required: [],
+    forbidden: [],
+    customCheck: (a) => {
+      // A poem would be multi-line creative content. Check that it's a refusal instead.
+      const refused = a.includes('only') || a.includes('comparit') || a.includes('cpit') || a.includes('can only') || a.includes('nur') || a.includes('vetëm') || a.includes('sorry') || a.includes('nicht');
+      const looksLikePoem = (a.match(/\n/g) || []).length > 3 && a.length > 100 && !a.includes('comparit') && !a.includes('step');
+      if (looksLikePoem && !refused) {
+        return { ok: false, detail: 'Bot wrote a poem instead of refusing — should redirect to internal topics' };
+      }
+      return { ok: true };
+    },
+    note: 'Creative writing requests must be refused',
+  },
+
+  // ── T10: Abbreviations — only from documents ──────────────────────────────
+  {
+    id: 'T10a',
+    q: 'What does SUHK mean?',
+    // SUHK IS in our documents — bot must answer correctly
+    required: ['selbstständige', 'selbststä', 'unternehmer', 'heilberufe', 'kammerberufe'],
+    forbidden: [],
+    note: 'SUHK is documented — bot must answer correctly from data, not general knowledge',
+  },
+  {
+    id: 'T10b',
+    q: 'What does ZXQW mean?',
+    // Made-up abbreviation — must NOT be answered from general knowledge
+    required: [],
+    forbidden: [],
+    customCheck: (a) => {
+      const refused = a.includes("couldn't find") || a.includes('not found') || a.includes('not in') || a.includes('available documents') || a.includes('nicht') || a.includes('nicht gefunden') || a.includes('nuk') || a.includes('unknown') || a.includes('no information');
+      return refused
+        ? { ok: true }
+        : { ok: false, detail: 'Bot did not refuse a made-up abbreviation — should say it is not in available documents' };
+    },
+    note: 'Unknown abbreviation ZXQW must be refused — not answered from general knowledge',
+  },
 ];
 
 async function runLiveTests() {
