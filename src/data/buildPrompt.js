@@ -14,17 +14,23 @@
  * To update people / holidays / policies: edit the static sections below
  */
 
-import { fachbereiche } from './sources/fachbereiche.js';
-import { devTeamsData } from './sources/devTeams.js';
-import { workflowsData } from './sources/workflows.js';
-import { itSupportData } from './sources/itSupport.js';
+import { fachbereiche } from "./sources/fachbereiche.js";
+import { devTeamsData } from "./sources/devTeams.js";
+import { workflowsData } from "./sources/workflows.js";
+import { itSupportData } from "./sources/itSupport.js";
 // knowledgeBase.js is the single source of truth for people data.
 // buildPrompt.js generates AI prompt sections from it dynamically.
 // Frontend components (OrgChart, localAnswerService) also import from knowledgeBase.js.
-import { people, wisotechPeople } from './knowledgeBase.js';
+import { people, wisotechPeople } from "./knowledgeBase.js";
 
 // ── Language code helper ──────────────────────────────────────────────────────
-const LANG_CODE = { German: 'de', English: 'en', Albanian: 'sq', French: 'fr', Serbian: 'sr', Turkish: 'tr' };
+const LANG_CODE = {
+  German: "de",
+  English: "en",
+  Albanian: "sq",
+  French: "fr",
+  Turkish: "tr",
+};
 
 /**
  * Accepts both legacy string[] AND new { lang, src }[] format.
@@ -32,40 +38,59 @@ const LANG_CODE = { German: 'de', English: 'en', Albanian: 'sq', French: 'fr', S
  * location/name and are not explicitly documented. Never show them in AI answers.
  */
 function langStr(langs) {
-  if (!langs || !langs.length) return '';
+  if (!langs || !langs.length) return "";
   return langs
-    .filter(l => typeof l === 'string' || l.src !== null) // drop null-source entries
-    .map(l => {
-      const name = typeof l === 'string' ? l : l.lang;
+    .filter((l) => typeof l === "string" || l.src !== null) // drop null-source entries
+    .map((l) => {
+      const name = typeof l === "string" ? l : l.lang;
       return LANG_CODE[name] || name.slice(0, 2).toLowerCase();
     })
-    .join(', ');
+    .join(", ");
 }
 
 /** Returns the raw language name strings (sourced only — null-src filtered). */
 function langNames(langs) {
   if (!langs || !langs.length) return [];
   return langs
-    .filter(l => typeof l === 'string' || l.src !== null)
-    .map(l => typeof l === 'string' ? l : l.lang);
+    .filter((l) => typeof l === "string" || l.src !== null)
+    .map((l) => (typeof l === "string" ? l : l.lang));
 }
 function personLine(p) {
-  const email = p.email || '(not in source documents)';
+  const email = p.email || "(not in source documents)";
   return `- ${p.name} | ${p.role} | ${p.office} | ${langStr(p.languages)} | ${email}`;
 }
 
-const LEADERSHIP_ROLES = new Set(['CEO', 'COO', 'CTO', 'CPO', 'CMO', 'CSO', 'CPMO']);
+const LEADERSHIP_ROLES = new Set([
+  "CEO",
+  "COO",
+  "CTO",
+  "CPO",
+  "CMO",
+  "CSO",
+  "CPMO",
+]);
 function isLeadership(p) {
-  return LEADERSHIP_ROLES.has(p.role) || p.role.includes('Assistentin der Geschäftsführung');
+  return (
+    LEADERSHIP_ROLES.has(p.role) ||
+    p.role.includes("Assistentin der Geschäftsführung")
+  );
 }
 
 function buildPeopleSection() {
-  const leadership   = people.filter(p => isLeadership(p));
-  const development  = people.filter(p => p.team === 'Development'      && !isLeadership(p));
-  const integrations = people.filter(p => p.team === 'Integrations');
-  const ba           = people.filter(p => p.team === 'Business Analysis' && !isLeadership(p));
-  const sales        = people.filter(p => p.team === 'Sales & Marketing' && !isLeadership(p));
-  const mgmt         = people.filter(p => p.team === 'Management'        && !isLeadership(p));
+  const leadership = people.filter((p) => isLeadership(p));
+  const development = people.filter(
+    (p) => p.team === "Development" && !isLeadership(p),
+  );
+  const integrations = people.filter((p) => p.team === "Integrations");
+  const ba = people.filter(
+    (p) => p.team === "Business Analysis" && !isLeadership(p),
+  );
+  const sales = people.filter(
+    (p) => p.team === "Sales & Marketing" && !isLeadership(p),
+  );
+  const mgmt = people.filter(
+    (p) => p.team === "Management" && !isLeadership(p),
+  );
 
   const lines = [
     `── LEADERSHIP ────────────────────────────────────────────────────────────────`,
@@ -90,7 +115,7 @@ function buildPeopleSection() {
     `── MANAGEMENT & SUPPORT ─────────────────────────────────────────────────────`,
     ...mgmt.map(personLine),
   ];
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 function buildWisotechSection() {
@@ -99,10 +124,12 @@ function buildWisotechSection() {
     `Source: organigram WT.pdf`,
   ];
   for (const p of wisotechPeople) {
-    const email = p.email || '(not in source documents)';
-    lines.push(`- ${p.name} | ${p.role} | ${p.office} | ${langStr(p.languages)} | ${email}`);
+    const email = p.email || "(not in source documents)";
+    lines.push(
+      `- ${p.name} | ${p.role} | ${p.office} | ${langStr(p.languages)} | ${email}`,
+    );
   }
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 // ── Dynamic section builders ──────────────────────────────────────────────────
@@ -134,9 +161,13 @@ function buildITSupportSection() {
   lines.push(`  1. Try self-help steps above.`);
   lines.push(`  2. Non-urgent: email ${c.email} with a clear subject.`);
   lines.push(`  3. Urgent: call ${c.phone}.`);
-  lines.push(`  4. For SharePoint access: Patrick von der Hagen (pvdh@comparit.de) or IT Teams channel.`);
-  lines.push(`  ALWAYS include: (1) problem description, (2) device/software, (3) since when, (4) screenshot if available.`);
-  return lines.join('\n');
+  lines.push(
+    `  4. For SharePoint access: Patrick von der Hagen (pvdh@comparit.de) or IT Teams channel.`,
+  );
+  lines.push(
+    `  ALWAYS include: (1) problem description, (2) device/software, (3) since when, (4) screenshot if available.`,
+  );
+  return lines.join("\n");
 }
 
 function buildWorkflowsSection() {
@@ -146,19 +177,21 @@ function buildWorkflowsSection() {
 
   for (const wf of workflowsData.workflows) {
     lines.push(``);
-    lines.push(`${wf.title.toUpperCase()}${wf.titleEN ? ` (${wf.titleEN})` : ''}`);
+    lines.push(
+      `${wf.title.toUpperCase()}${wf.titleEN ? ` (${wf.titleEN})` : ""}`,
+    );
     // Source filename is intentionally omitted — AI must not show filenames to users.
     // Only surface the contact/system metadata that is useful in answers.
     const metaParts = [];
     if (wf.owner) metaParts.push(`Contact: ${wf.owner}`);
     if (wf.system) metaParts.push(`System: ${wf.system}`);
-    if (metaParts.length) lines.push(metaParts.join(' | '));
+    if (metaParts.length) lines.push(metaParts.join(" | "));
 
     if (wf.description) lines.push(`Purpose: ${wf.description}`);
 
     if (wf.prerequisites && wf.prerequisites.length) {
       lines.push(`Prerequisites:`);
-      wf.prerequisites.forEach(p => lines.push(`  • ${p}`));
+      wf.prerequisites.forEach((p) => lines.push(`  • ${p}`));
     }
 
     if (wf.steps && wf.steps.length) {
@@ -187,7 +220,7 @@ function buildWorkflowsSection() {
     if (wf.rules) lines.push(`Rules: ${wf.rules}`);
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 function buildFachbereicheSection() {
@@ -200,28 +233,44 @@ function buildFachbereicheSection() {
     `SACHVERSICHERUNG (Sach):`,
   ];
   for (const item of fachbereiche.sachversicherung) {
-    const b = item.backup ? ` | backup: ${item.backup.name} (${item.backup.email})` : '';
-    lines.push(`  ${item.code} ${item.label}: ${item.primary.name} (${item.primary.email})${b}`);
+    const b = item.backup
+      ? ` | backup: ${item.backup.name} (${item.backup.email})`
+      : "";
+    lines.push(
+      `  ${item.code} ${item.label}: ${item.primary.name} (${item.primary.email})${b}`,
+    );
   }
-  lines.push(`  → Fachbereich Sach overall: Justin Kleinschmidt (WG, RS) + Marvin Jordan (HR, PHV, THV)`);
+  lines.push(
+    `  → Fachbereich Sach overall: Justin Kleinschmidt (WG, RS) + Marvin Jordan (HR, PHV, THV)`,
+  );
   lines.push(``);
   lines.push(`KFZ (Kraftfahrzeug):`);
   for (const item of fachbereiche.kfz) {
-    const b = item.backup ? ` | backup: ${item.backup.name} (${item.backup.email})` : '';
-    lines.push(`  ${item.label}: ${item.primary.name} (${item.primary.email})${b}`);
+    const b = item.backup
+      ? ` | backup: ${item.backup.name} (${item.backup.email})`
+      : "";
+    lines.push(
+      `  ${item.label}: ${item.primary.name} (${item.primary.email})${b}`,
+    );
   }
   lines.push(``);
   lines.push(`LEBENSVERSICHERUNG (LV):`);
   for (const item of fachbereiche.lebensversicherung) {
-    const b = item.backup ? ` | backup: ${item.backup.name} (${item.backup.email})` : '';
-    lines.push(`  ${item.label}: ${item.primary.name} (${item.primary.email})${b}`);
+    const b = item.backup
+      ? ` | backup: ${item.backup.name} (${item.backup.email})`
+      : "";
+    lines.push(
+      `  ${item.label}: ${item.primary.name} (${item.primary.email})${b}`,
+    );
   }
   lines.push(``);
   lines.push(`KRANKENVERSICHERUNG (KV):`);
   lines.push(`  ${fachbereiche.krankenversicherung.note}`);
   lines.push(`  ${fachbereiche.krankenversicherung.guidance}`);
-  lines.push(`  KV dev team (developers only): ${fachbereiche.krankenversicherung.devTeam.join(', ')}`);
-  return lines.join('\n');
+  lines.push(
+    `  KV dev team (developers only): ${fachbereiche.krankenversicherung.devTeam.join(", ")}`,
+  );
+  return lines.join("\n");
 }
 
 function buildDevTeamsSection() {
@@ -232,9 +281,9 @@ function buildDevTeamsSection() {
     ``,
   ];
   for (const team of devTeamsData.teams) {
-    const memberNames = team.members.map(m => m.name).join(', ');
+    const memberNames = team.members.map((m) => m.name).join(", ");
     lines.push(`Dev-Team ${team.id}: ${memberNames}`);
-    lines.push(`  Projects: ${team.projects.join(', ')}`);
+    lines.push(`  Projects: ${team.projects.join(", ")}`);
     if (team.note) lines.push(`  Note: ${team.note}`);
   }
   lines.push(``);
@@ -243,7 +292,7 @@ function buildDevTeamsSection() {
     lines.push(`  ${lead.name} — ${lead.title} (${lead.email})`);
   }
   lines.push(`  ${devTeamsData.noHamburgTechLead}`);
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 // ── Full system prompt ────────────────────────────────────────────────────────
