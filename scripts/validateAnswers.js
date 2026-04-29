@@ -285,9 +285,9 @@ const TEST_CASES = [
   {
     id: 'T1c',
     q: 'Fachbereich KFZ',
-    required: ['chantal'],
+    required: ['eva'],
     forbidden: ['lirim imeri', 'bleron morina', 'arianit gashi'],
-    note: 'Fachbereich KFZ → BA (Chantal), NOT KFZ developers',
+    note: 'Fachbereich KFZ → BA (Eva Arfaoui-Holthey), NOT KFZ developers',
   },
   {
     id: 'T1d',

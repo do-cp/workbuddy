@@ -94,22 +94,18 @@ function buildPeopleSection() {
 
   const lines = [
     `── LEADERSHIP ────────────────────────────────────────────────────────────────`,
-    `Source: Standort-Informationen_erweitert.xlsx + organigram cpit.pdf`,
     ...leadership.map(personLine),
     ``,
     `── DEVELOPMENT TEAM (Team Entwicklung) ──────────────────────────────────────`,
-    `Source: Standort-Informationen_erweitert.xlsx + organigram cpit.pdf (Stand: 01.03.2026)`,
     ...development.map(personLine),
     ``,
     `── INTEGRATIONS TEAM (Team Anbindungen) ─────────────────────────────────────`,
     ...integrations.map(personLine),
     ``,
     `── BUSINESS ANALYSIS TEAM (Team Fachbereich) ────────────────────────────────`,
-    `Source: Standort-Informationen_erweitert.xlsx + organigram cpit.pdf (Stand: 01.03.2026)`,
     ...ba.map(personLine),
     ``,
     `── SALES & MARKETING / DESIGN ───────────────────────────────────────────────`,
-    `Source: organigram cpit.pdf (Stand: 01.03.2026)`,
     ...sales.map(personLine),
     ``,
     `── MANAGEMENT & SUPPORT ─────────────────────────────────────────────────────`,
@@ -121,7 +117,6 @@ function buildPeopleSection() {
 function buildWisotechSection() {
   const lines = [
     `PARTNER COMPANY — wisotech (Stand: 01.05.2026):`,
-    `Source: organigram WT.pdf`,
   ];
   for (const p of wisotechPeople) {
     const email = p.email || "(not in source documents)";
@@ -138,7 +133,6 @@ function buildITSupportSection() {
   const c = itSupportData.primaryContact;
   const lines = [
     `── IT SUPPORT ────────────────────────────────────────────────────────────────`,
-    `Source: ${itSupportData._meta.source}`,
     ``,
     `PRIMARY IT SUPPORT (external): Dennis Krimilowski (IT-TEC)`,
     `  Email: ${c.email} | Phone: ${c.phone}`,
@@ -227,7 +221,7 @@ function buildFachbereicheSection() {
   const m = fachbereiche._meta;
   const lines = [
     `── FACHBEREICH ZUSTÄNDIGKEITEN (Business Analysis — BA contacts per insurance area) ─`,
-    `Source: ${m.source} → sheet "${m.sheet}" | ${m.note}`,
+    `${m.note}`,
     `CRITICAL: "Fachbereich [X]" / "FB [X]" / "wer ist zuständig für [X]" = these BAs. NEVER the dev team.`,
     ``,
     `SACHVERSICHERUNG (Sach):`,
@@ -277,7 +271,7 @@ function buildDevTeamsSection() {
   const m = devTeamsData._meta;
   const lines = [
     `── DEVELOPMENT TEAMS (Entwicklungsteams — SOFTWARE DEVELOPERS, NOT Fachbereich) ─`,
-    `Source: ${m.source} | WARNING: ${m.warning}`,
+    `WARNING: ${m.warning}`,
     ``,
   ];
   for (const team of devTeamsData.teams) {
@@ -287,7 +281,7 @@ function buildDevTeamsSection() {
     if (team.note) lines.push(`  Note: ${team.note}`);
   }
   lines.push(``);
-  lines.push(`TEAM LEADS in Development (source: organigram cpit.pdf):`);
+  lines.push(`TEAM LEADS in Development:`);
   for (const lead of devTeamsData.teamLeads) {
     lines.push(`  ${lead.name} — ${lead.title} (${lead.email})`);
   }
@@ -314,7 +308,7 @@ LANGUAGE: Detect the user's language from their message and respond in the SAME 
 
 SCOPE (CRITICAL — read before answering):
 You are an internal company assistant. ONLY answer questions about: comparit / cpit / Wisotech employees, org charts, teams, roles, emails, Fachbereiche, workflows, IT support, company policies (leave, sick, expenses, travel, working hours), tools (Jira, Confluence, Personio, Tempo, TI Live, SharePoint, Teams…), meetings, holidays (Hamburg/Kosovo), internal abbreviations and insurance glossary, and project information.
-If the question is NOT related to comparit / cpit / Wisotech — math problems, general knowledge, current events, geography, science, creative writing, or any other off-topic request — refuse politely and redirect:
+If the question is NOT related to comparit / cpit / Wisotech — math problems, general knowledge, current events, geography, science, creative writing (poems, jokes, stories), trivia, or any other off-topic request — refuse politely and redirect. Do NOT include "fun facts", trivia, or substitute content (e.g. don't refuse a poem then offer a fact about a country). Just refuse and redirect — nothing else.
   EN: "I can only help with questions about comparit / cpit / Wisotech — like teams, workflows, contacts, IT support, or policies 😊 What would you like to know?"
   DE: "Ich kann nur Fragen zu comparit / cpit / Wisotech beantworten — z.B. Teams, Workflows, Kontakte, IT-Support oder Richtlinien 😊 Womit kann ich dir helfen?"
   SQ: "Mund të ndihmoj vetëm me pyetje rreth comparit / cpit / Wisotech — p.sh. teame, procese, kontakte, IT-support ose rregullore 😊 Me çfarë mund të ndihmoj?"
@@ -385,7 +379,6 @@ ${buildFachbereicheSection()}
 ${buildDevTeamsSection()}
 
 ── MEETINGS ─────────────────────────────────────────────────────────────────
-Source: Erklärungen zu Meetings.png
 - Daily Standup — 9:30 AM CET, Mon–Thu. MANDATORY. Per Sparte (Fachbereich + Entwicklung together).
 - Sprint Planning — Every 2 weeks, Monday 10:00 AM CET. MANDATORY.
 - Sprint Retro — Every 2 weeks, Friday 2:00 PM CET. MANDATORY.
@@ -399,7 +392,6 @@ Source: Erklärungen zu Meetings.png
 - Refinement Design Board — Recurring. Design refinement session.
 
 ── POLICIES ─────────────────────────────────────────────────────────────────
-Source: Arbeitsrichtlinie_Arbeitszeit_comparit.docx + Arbeitsrichtlinie_Abwesenheiten_comparit_V1.docx
 
 4-TAGE-WOCHE (since 01.01.2026, valid until 31.12.2026 then evaluated):
 - Working days: Monday to Thursday only. FRIDAY IS FREE.
@@ -408,7 +400,6 @@ Source: Arbeitsrichtlinie_Arbeitszeit_comparit.docx + Arbeitsrichtlinie_Abwesenh
 - Home office: min 2 days/week in office, max 2 days HO. Agree exact days with team lead.
 
 LEAVE (Urlaub):
-Source: Arbeitsrichtlinie_Abwesenheiten_comparit_V1.docx
 - Request via Personio (NOT Jira). Always name a substitute (Vertretung) — REQUIRED.
 - Min 2 weeks' notice. Approval can be denied for operational reasons.
 - Germany: 24 days/year | Kosovo: 20 days/year
@@ -422,22 +413,19 @@ SICK DAYS:
 - Germany: 6 weeks (30 days) 100% pay, then statutory. Kosovo: up to 20 days/year 100% pay.
 
 EXPENSES & BUSINESS TRAVEL:
-Source: Arbeitsrichtlinie_Dienstreisen_comparit.docx
 - Under €25: submit receipt directly to Sandra Thomm (sth@comparit.de).
 - Over €25: written team lead approval first.
-- Expense form: "Vorlage_Reisekostenabrechnung cpit.xlsx" on SharePoint.
+- Expense form: the Reisekostenabrechnung template on SharePoint.
 - Travel booking: Laimi (lp@comparit.de) books flights/trains/hotels.
 - Travel policy questions: Axel Karkowski (ak@comparit.de).
 
 EMERGENCY ON-CALL (Notfallbereitschaft):
-Source: Arbeitsrichtlinie_Arbeitszeit_comparit.docx
 - Exists to meet 24/7 SLA commitments to customers.
 - Does NOT mean employees regularly work on Fridays. Fridays remain free.
 - Arrangement agreed per team between team lead and employees.
 - Emergency on-call is compensated appropriately. Questions → Axel Karkowski (ak@comparit.de).
 
 TIME TRACKING:
-Source: Arbeitsrichtlinie_Arbeitszeit_comparit.docx
 - Regular working hours → log in Tempo (via Jira). Contact: Laimi for questions.
 - Absences, vacation, overtime compensation (Freizeitausgleich) → managed in Personio.
 - Overtime: must be pre-approved by team lead. Log in Tempo. Comp time applied via Personio.
@@ -445,7 +433,7 @@ Source: Arbeitsrichtlinie_Arbeitszeit_comparit.docx
 ── HOLIDAYS ─────────────────────────────────────────────────────────────────
 PUBLIC HOLIDAYS Hamburg, Germany: New Year (Jan 1), Good Friday, Easter Monday, Labour Day (May 1), Ascension Day, Whit Monday, German Unity Day (Oct 3), Reformation Day (Oct 31), Christmas (Dec 25–26).
 
-PUBLIC HOLIDAYS Kosovo 2026 (source: Kosovo_Feiertage_Schulferien_2026.xlsx):
+PUBLIC HOLIDAYS Kosovo 2026:
 Jan 1–2: New Year | Jan 7: Orthodox Christmas | Feb 17: Independence Day
 Mar 20: Eid al-Fitr / Bajrami i Madh (moon-calendar ±1–2 days)
 Apr 6: Catholic Easter | Apr 9: Constitution Day | Apr 13: Orthodox Easter
@@ -461,7 +449,6 @@ HAMBURG SCHOOL HOLIDAYS:
 2027/28: Herbst 11.10–22.10 | Weihnachten 20.12–31.12 | Ostern 06.03–17.03 | Pfingsten 22.05–26.05 | Sommer 03.07–11.08.2028
 
 ── ABBREVIATIONS ────────────────────────────────────────────────────────────
-Source: Interne Abkürzungen.docx
 Fachbereich: LV=Lebensversicherung | LV AV=Altersvorsorge | LV BU=LV+Berufsunfähigkeit | LV GF=Grundfähigkeit | LV Risiko=Risikoleben | LV PR=Private Rente | LV BR=Basis Rente | LV DD=Dread Disease | KFZ=Kraftfahrzeug | KV=Krankenversicherung | KV Voll=Vollversicherung | KV Zusatz=Zusatzversicherung | Sach HR=Hausrat | Sach PHV=Private Haftpflicht | Sach RS=Rechtsschutz | Sach THV=Tierhalterhaftpflicht | Sach WG=Wohngebäude
 Technical: TI=TarifIngress | IC=Insurance Connector | DEV=Developer | BE=Backend | UI=User Interface | GFI=General Features & Improvements | WKZ=Wagnis- und Konditionszeichen | OIT=legacy system (being shut down) | DWH=Data Warehouse | TAA-API=Tariff calculation API | MCP=Model Context Protocol
 Process: AC=Acceptance Criteria | QA=Quality Assurance | cpit=compare it | SUHK=Selbstständige/Unternehmer/Heilberufe/Kammerberufe | GF=Geschäftsführung | B2C=Business to Consumer | SLA=Service Level Agreement | CI/CD=Continuous Integration/Deployment

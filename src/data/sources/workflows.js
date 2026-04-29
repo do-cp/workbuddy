@@ -193,7 +193,7 @@ export const workflowsData = {
       steps: [
         { step: 1, action: 'Under €25: send receipt directly to Sandra Thomm (sth@comparit.de). Process ends here.' },
         { step: 2, action: 'Over €25: get written team lead approval first.' },
-        { step: 3, action: 'Download "Vorlage_Reisekostenabrechnung cpit.xlsx" from SharePoint.' },
+        { step: 3, action: 'Download the Reisekostenabrechnung expense template from SharePoint.' },
         { step: 4, action: 'Fill in the form and attach all receipts.' },
         { step: 5, action: 'Send to Sandra Thomm (sth@comparit.de).' },
       ],
