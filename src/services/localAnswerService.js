@@ -236,7 +236,7 @@ function tryPolicies(query, lang) {
 
 function tryHolidays(query, lang) {
   const lq = q(query);
-  if (!contains(lq, 'holiday', 'feiertag', 'public holiday', 'bank holiday', 'festtag', 'ferien', 'kosova', 'kosovo', 'germany', 'deutschland', 'hamburg')) return null;
+  if (!contains(lq, 'holiday', 'feiertag', 'public holiday', 'bank holiday', 'festtag', 'ferien', 'feste', 'pushime', 'bajram', 'kosova', 'kosovo', 'germany', 'deutschland', 'hamburg')) return null;
 
   const isKosovo = contains(lq, 'kosovo', 'kosova', 'prishtina', 'kosovo');
   const isGermany = contains(lq, 'germany', 'deutschland', 'hamburg', 'german');

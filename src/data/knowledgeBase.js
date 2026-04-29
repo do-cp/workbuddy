@@ -166,13 +166,27 @@ export const holidays = {
   ],
   kosovo: [
     'New Year — Jan 1–2',
+    'Orthodox Christmas — Jan 7',
     'Independence Day — Feb 17',
+    'Eid al-Fitr / Bajrami i Madh — Mar 20, 2026 (moon-calendar, ±1–2 days)',
+    'Catholic Easter — Apr 6, 2026',
     'Constitution Day — Apr 9',
+    'Orthodox Easter — Apr 13, 2026',
     'Labour Day — May 1',
-    'Europe Day — May 9',
-    'Eid al-Fitr (date varies)',
-    'Eid al-Adha (date varies)',
+    'Europe Day substitute — May 11, 2026 (May 9 falls on Saturday → Monday off)',
+    'Eid al-Adha / Bajrami i Vogël — May 27, 2026 (moon-calendar, ±1–2 days)',
+    'Catholic Christmas — Dec 25',
   ],
+  kosovo_school_vacations: {
+    '2025/26': {
+      Winterferien:    '26 Dec 2025 – 7 Jan 2026 (1st semester ends 24 Dec 2025)',
+      'Semester 2 start': '8 Jan 2026',
+      'Catholic Easter': '6 Apr 2026',
+      Frühlingsferien: '7–10 Apr 2026',
+      'Orthodox Easter': '13 Apr 2026',
+      Schuljahresende: '19 Jun 2026',
+    },
+  },
   hamburg_school_vacations: {
     '2025/26': {
       Herbst:      '20 Oct – 31 Oct 2025',

@@ -216,7 +216,21 @@ TIME TRACKING:
 ── HOLIDAYS ─────────────────────────────────────────────────────────────────
 PUBLIC HOLIDAYS Hamburg, Germany: New Year (Jan 1), Good Friday, Easter Monday, Labour Day (May 1), Ascension Day, Whit Monday, German Unity Day (Oct 3), Reformation Day (Oct 31), Christmas (Dec 25–26).
 
-PUBLIC HOLIDAYS Kosovo: New Year (Jan 1–2), Independence Day (Feb 17), Constitution Day (Apr 9), Labour Day (May 1), Europe Day (May 9), Eid al-Fitr (date varies), Eid al-Adha (date varies).
+PUBLIC HOLIDAYS Kosovo 2026 (exact dates):
+- Jan 1–2: New Year
+- Jan 7: Orthodox Christmas
+- Feb 17: Independence Day
+- Mar 20: Eid al-Fitr / Bajrami i Madh (moon-calendar, ±1–2 days)
+- Apr 6: Catholic Easter
+- Apr 9: Constitution Day
+- Apr 13: Orthodox Easter
+- May 1: Labour Day
+- May 11: Europe Day substitute (May 9 = Saturday → Monday off)
+- May 27: Eid al-Adha / Bajrami i Vogël (moon-calendar, ±1–2 days)
+- Dec 25: Catholic Christmas
+Note: Holidays falling on a weekend are moved to the following Monday.
+
+KOSOVO SCHOOL HOLIDAYS 2025/26: Winterferien 26 Dec 2025–7 Jan 2026 | Spring break 7–10 Apr 2026 | School year ends 19 Jun 2026
 
 HAMBURG SCHOOL HOLIDAYS (Schulferien) — useful for planning vacation if you have school-age children:
 2025/26: Herbst 20.10–31.10.2025 | Weihnachten 17.12.2025–02.01.2026 | Winter 30.01.2026 | Ostern 02.03–13.03.2026 | Pfingsten 11.05–15.05.2026 | Sommer 09.07–19.08.2026
