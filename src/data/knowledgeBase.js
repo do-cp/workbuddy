@@ -143,34 +143,13 @@ export const projects = [
   { name: 'OVB / Telis Anbindung', description: 'Insurance broker integrations',       teams: ['Sonderprojekte', 'IC Webservices'], contacts: ['Tobias Schrank', 'Donart Pllashniku', 'Besnik Ejupi'] },
 ];
 
-// ── Development sub-teams (as of 2026) ────────────────────────────────────────
-export const devTeams = {
-  SACH:           ['Sebastian Thiede', 'Flutura Fejzullahu', 'Anita Hasani', 'Elvira Hasani', 'Çlirim Murati', 'Ardit Gjyrevci'],
-  Sonderprojekte: ['Tobias Schrank', 'Behar Simnica', 'Donart Pllashniku'],
-  'IC Webservices': ['Ylli Kllokoqi', 'Adil Jusufi', 'Besnik Ejupi', 'Levent Öztürk', 'Xheneta Hasani'],
-  ChargeIT:       ['Zgjim Kabashi', 'Ora Osmani'],
-  'TI & Infra':   ['Timo Wickboldt', 'Philip Szalla'],
-  KFZ:            ['Lirim Imeri', 'Bleron Morina', 'Arianit Gashi'],
-  Kranken:        ['Ardi Zariqi', 'Venera Plakolli'],
-  'QA/Sonstige':  ['Drilon Osmanaj'],
-};
-
-// ── Business Analysis assignments per insurance area ─────────────────────────
-// Source: Teams_Projekte_Anteile_2026.xlsx → sheet "Fachbereich-Aufteilung"
-// These are FACHBEREICH (BA) contacts — not developer teams!
-export const baAssignments = {
-  'WG – Wohngebäude':              { primary: 'Justin Kleinschmidt', backup: 'Dörte Meins' },
-  'HR – Hausrat':                   { primary: 'Marvin Jordan',       backup: 'Eva Arfaoui-Holthey' },
-  'PHV – Private Haftpflicht':      { primary: 'Marvin Jordan',       backup: 'Eva Arfaoui-Holthey' },
-  'THV – Tierhalterhaftpflicht':    { primary: 'Marvin Jordan',       backup: 'Eva Arfaoui-Holthey' },
-  'RS – Rechtsschutz':              { primary: 'Justin Kleinschmidt', backup: 'Dörte Meins' },
-  'KFZ PKW':                        { primary: 'Eva Arfaoui-Holthey', backup: 'Marvin Jordan' },
-  'KFZ Motorrad':                   { primary: 'Eva Arfaoui-Holthey', backup: 'Justin Kleinschmidt' },
-  'KFZ Anhänger':                   { primary: 'Justin Kleinschmidt', backup: 'Eva Arfaoui-Holthey' },
-  'BU / RiLV (Lebensversicherung)': { primary: 'Tanja Nitsch',        backup: 'Michael Portius' },
-  'Dread Disease':                  { primary: 'Tanja Nitsch',        backup: 'Justin Kleinschmidt' },
-  'LV Produktrating':               { primary: 'Lukas Hodel',         backup: 'Tanja Nitsch' },
-};
+// ── REMOVED: devTeams and baAssignments ──────────────────────────────────────
+// These were dead exports (never imported anywhere in the frontend).
+// They duplicated data from src/data/sources/devTeams.js and fachbereiche.js.
+// Single sources of truth:
+//   Dev team assignments → src/data/sources/devTeams.js
+//   BA/Fachbereich assignments → src/data/sources/fachbereiche.js
+// Both are consumed by buildPrompt.js and the AI system prompt.
 
 export const meetings = [
   { name: 'Daily Standup',       when: '9:30 AM CET, Mon–Thu',                   mandatory: true,  description: 'Per Sparte — Fachbereich & Entwicklung together. Short sync on who is working on what.' },

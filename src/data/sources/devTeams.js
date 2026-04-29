@@ -22,7 +22,7 @@ export const devTeamsData = {
     {
       id: 'SACH',
       description: 'Developers coding Sachversicherung products (WG, HR, PHV, THV, RS)',
-      note: 'These are DEVELOPERS. For Fachbereich Sach BA contacts → see fachbereiche.js',
+      note: 'These are DEVELOPERS. For Fachbereich Sach BA contacts → see the FACHBEREICH ZUSTÄNDIGKEITEN section.',
       members: [
         { name: 'Sebastian Thiede',  role: 'Backend',   fte: 0.5, email: 'st@comparit.de' },
         { name: 'Flutura Fejzullahu',role: 'Backend',   fte: 0.5, email: 'ff@comparit.de' },
@@ -83,7 +83,7 @@ export const devTeamsData = {
     {
       id: 'KFZ',
       description: 'Developers coding motor vehicle insurance (NOT Fachbereich KFZ contact)',
-      note: 'For KFZ Fachbereich BA contacts → see fachbereiche.js kfz section',
+      note: 'For KFZ Fachbereich BA contacts → see the FACHBEREICH ZUSTÄNDIGKEITEN section.',
       members: [
         { name: 'Lirim Imeri',    role: 'Backend + WS', fte: 1.0, email: 'li@comparit.de' },
         { name: 'Bleron Morina',  role: 'Backend + WS', fte: 1.0, email: 'bm@comparit.de' },
@@ -94,7 +94,7 @@ export const devTeamsData = {
     {
       id: 'Kranken',
       description: 'Developers coding health insurance (NOT Fachbereich KV contact)',
-      note: 'For KV Fachbereich → no BA assigned; refer to Ellen Ludwig or Dörte Meins',
+      note: 'For KV Fachbereich → no BA assigned in source documents; refer to Ellen Ludwig (CPO) or Dörte Meins (PO).',
       members: [
         { name: 'Ardi Zariqi',    role: 'Developer', fte: 1.0, email: 'az@comparit.de' },
         { name: 'Venera Plakolli', role: 'Developer', fte: 1.0, email: 'vp@comparit.de' },

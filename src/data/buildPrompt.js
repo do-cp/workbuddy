@@ -18,6 +18,71 @@ import { fachbereiche } from './sources/fachbereiche.js';
 import { devTeamsData } from './sources/devTeams.js';
 import { workflowsData } from './sources/workflows.js';
 import { itSupportData } from './sources/itSupport.js';
+// knowledgeBase.js is the single source of truth for people data.
+// buildPrompt.js generates AI prompt sections from it dynamically.
+// Frontend components (OrgChart, localAnswerService) also import from knowledgeBase.js.
+import { people, wisotechPeople } from './knowledgeBase.js';
+
+// ── Language code helper ──────────────────────────────────────────────────────
+const LANG_CODE = { German: 'de', English: 'en', Albanian: 'sq', French: 'fr', Serbian: 'sr', Turkish: 'tr' };
+function langStr(langs) {
+  return (langs || []).map(l => LANG_CODE[l] || l.slice(0, 2).toLowerCase()).join(', ');
+}
+function personLine(p) {
+  const email = p.email || '(not in source documents)';
+  return `- ${p.name} | ${p.role} | ${p.office} | ${langStr(p.languages)} | ${email}`;
+}
+
+const LEADERSHIP_ROLES = new Set(['CEO', 'COO', 'CTO', 'CPO', 'CMO', 'CSO', 'CPMO']);
+function isLeadership(p) {
+  return LEADERSHIP_ROLES.has(p.role) || p.role.includes('Assistentin der Geschäftsführung');
+}
+
+function buildPeopleSection() {
+  const leadership   = people.filter(p => isLeadership(p));
+  const development  = people.filter(p => p.team === 'Development'      && !isLeadership(p));
+  const integrations = people.filter(p => p.team === 'Integrations');
+  const ba           = people.filter(p => p.team === 'Business Analysis' && !isLeadership(p));
+  const sales        = people.filter(p => p.team === 'Sales & Marketing' && !isLeadership(p));
+  const mgmt         = people.filter(p => p.team === 'Management'        && !isLeadership(p));
+
+  const lines = [
+    `── LEADERSHIP ────────────────────────────────────────────────────────────────`,
+    `Source: Standort-Informationen_erweitert.xlsx + organigram cpit.pdf`,
+    ...leadership.map(personLine),
+    ``,
+    `── DEVELOPMENT TEAM (Team Entwicklung) ──────────────────────────────────────`,
+    `Source: Standort-Informationen_erweitert.xlsx + organigram cpit.pdf (Stand: 01.03.2026)`,
+    ...development.map(personLine),
+    ``,
+    `── INTEGRATIONS TEAM (Team Anbindungen) ─────────────────────────────────────`,
+    ...integrations.map(personLine),
+    ``,
+    `── BUSINESS ANALYSIS TEAM (Team Fachbereich) ────────────────────────────────`,
+    `Source: Standort-Informationen_erweitert.xlsx + organigram cpit.pdf (Stand: 01.03.2026)`,
+    ...ba.map(personLine),
+    ``,
+    `── SALES & MARKETING / DESIGN ───────────────────────────────────────────────`,
+    `Source: organigram cpit.pdf (Stand: 01.03.2026)`,
+    ...sales.map(personLine),
+    ``,
+    `── MANAGEMENT & SUPPORT ─────────────────────────────────────────────────────`,
+    ...mgmt.map(personLine),
+  ];
+  return lines.join('\n');
+}
+
+function buildWisotechSection() {
+  const lines = [
+    `PARTNER COMPANY — wisotech (Stand: 01.05.2026):`,
+    `Source: organigram WT.pdf`,
+  ];
+  for (const p of wisotechPeople) {
+    const email = p.email || '(not in source documents)';
+    lines.push(`- ${p.name} | ${p.role} | ${p.office} | ${langStr(p.languages)} | ${email}`);
+  }
+  return lines.join('\n');
+}
 
 // ── Dynamic section builders ──────────────────────────────────────────────────
 
@@ -203,93 +268,9 @@ Offices: Hamburg + Prishtina, Kosovo | Phone: 040 80 81 41 50 | info@comparit.de
 Office hours: Mon–Thu 09:00–18:00
 Hamburg: Hopfensack 19, 20457 Hamburg | Prishtina: Ruga Tirana C4/2-L14/2, 100 Prishtina
 
-PARTNER COMPANY — wisotech (Stand: 01.05.2026):
-CEO: Dr. Ing. Dirk Sommermeyer | CEO (comparit side): Matthias Brauch | CTO: Ylle Dragaj (shared)
-Admin: Laimi Pester (lp@comparit.de), Shkronja Babatinca (sb@comparit.de), Cornelia Rieger (Project Mgmt PO), Patrick von der Hagen (IT, pvdh@comparit.de)
-Design: Sebastian Houshmand (Design UI/UX)
-Dev (Prishtina): Behar Simnica (Expert Dev/Team Lead KO, bs@comparit.de), Qëndresa Rexhbogaj (Expert Dev), Shpend Bajgora (Senior, shpend@comparit.de), Lorik Haxhidauti (Senior, lh@comparit.de), Korab Qarri (Senior, kq@comparit.de), Muhamed Zeqiri (Senior Dev), Fisnik Kusari (Dev), Ag Hamiti (Junior Dev)
-Source: organigram WT.pdf
+${buildWisotechSection()}
 
-── LEADERSHIP ────────────────────────────────────────────────────────────────
-Source: Standort-Informationen_erweitert.xlsx + organigram cpit.pdf
-- Matthias Brauch       | CEO   | Hamburg                  | de, en          | mb@comparit.de
-- Axel Karkowski        | COO   | Hamburg                  | de, en          | ak@comparit.de
-- Ylle Dragaj           | CTO   | Remote Baden-Württemberg | de, en, sq      | yd@comparit.de
-- Ellen Ludwig          | CPO   | Hamburg                  | de, en          | el@comparit.de
-- Oliver Fink           | CMO   | Remote NRW               | de, en          | of@comparit.de
-- Alexander Lipp        | CSO   | Remote NRW               | de, en          | al@comparit.de
-- Martina Pirrung       | CPMO  | Remote Bayern            | de              | mp@comparit.de
-- Laimi Pester          | Assistentin der GF | Remote Brandenburg | de, en   | lp@comparit.de
-
-── DEVELOPMENT TEAM (Team Entwicklung) ──────────────────────────────────────
-Source: Standort-Informationen_erweitert.xlsx
-- Donart Pllashniku     | Team Lead BE/UI                  | Prishtina        | sq, en, de | dp@comparit.de
-- Drilon Osmanaj        | QA Engineer                      | Prishtina        | sq, en     | do@comparit.de
-- Behar Simnica         | Senior Developer / Team Lead KO  | Prishtina        | sq, en     | bs@comparit.de
-- Çlirim Murati         | Senior Software Developer        | Prishtina        | sq, en     | cm@comparit.de
-- Zgjim Kabashi         | Senior Software Developer        | Prishtina        | sq, en     | zk@comparit.de
-- Korab Qarri           | Senior Software Developer        | Prishtina        | sq, en     | kq@comparit.de
-- Lorik Haxhidauti      | Senior Software Developer        | Prishtina        | sq, en     | lh@comparit.de
-- Shpend Bajgora        | Senior Angular Developer         | Prishtina        | sq, en     | shpend@comparit.de
-- Tobias Schrank        | Senior Software Developer        | Hamburg          | de, en     | ts@comparit.de
-- Sebastian Thiede      | Senior Developer                 | Hamburg          | de, en     | st@comparit.de
-- Timo Wickboldt        | Senior Developer (TI & Infra)    | Hamburg          | de, en     | tw@comparit.de
-- Philip Szalla         | Senior Fullstack Developer       | Hamburg          | de, en     | ps@comparit.de
-- Argim Kaliqi          | Mid Developer                    | Prishtina        | sq, en     | argim.kaliqi@wisotech.de
-- Lirim Imeri           | Mid Software Developer           | Prishtina        | sq, en     | li@comparit.de
-- Ylli Kllokoqi         | Mid Software Developer           | Prishtina        | sq, en, de | yk@comparit.de
-- Ardi Zariqi           | Junior Developer                 | Prishtina        | sq, en     | az@comparit.de
-- Ardit Gjyrevci        | Junior Developer                 | Prishtina        | sq, en     | ag@comparit.de
-- Arianit Gashi         | Junior Developer                 | Prishtina        | sq, en     | aga@comparit.de
-- Bleron Morina         | Junior Developer                 | Prishtina        | sq, en     | bm@comparit.de
-- Elvira Hasani         | Junior Developer (Frontend)      | Prishtina        | sq, en     | eh@comparit.de
-- Venera Plakolli       | Junior Developer                 | Prishtina        | sq, en     | vp@comparit.de
-- Xheneta Hasani        | Junior Developer                 | Remote Hessen    | sq, en, de | xh@comparit.de
-- Ora Osmani            | Junior Developer                 | Prishtina        | sq, en     | oo@comparit.de
-- Anita Hasani          | Frontend Developer               | Prishtina        | sq, en     | (not in source documents)
-- Arber Mirena          | Senior Developer                 | Prishtina        | sq, en     | (not in source documents)
-- Behxhet Rexha         | Intern                           | Prishtina        | sq, en     | (not in source documents)
-- Fabio Schmied         | Senior Developer                 | Hamburg          | de, en     | (not in source documents)
-- Donika Krasniqi Gjoka | Mid Senior Developer             | Prishtina        | sq, en     | (not in source documents)
-- Ardian Hashu          | Senior Developer                 | Prishtina        | sq, en     | (not in source documents)
-- Nils Dent             | Junior Developer                 | Hamburg          | de, en     | (not in source documents)
-- Erza Gashi            | Intern                           | Prishtina        | sq, en     | (not in source documents)
-- Kamel Almaj           | Developer                        | Prishtina        | sq, en     | (not in source documents)
-- Miroslava Placecki    | Developer                        | Prishtina        | sq, en     | (not in source documents)
-Source (new people above): organigram cpit.pdf (Stand: 01.03.2026) — emails not available in org chart
-
-── INTEGRATIONS TEAM (Team Anbindungen) ─────────────────────────────────────
-- Besnik Ejupi          | Expert Software Developer | Prishtina  | de, en, sq | be@comparit.de
-- Levent Öztürk         | Developer                | Remote NRW | de, en     | loe@comparit.de
-- Adil Jusufi           | Junior Developer          | Prishtina  | de, sq     | aj@comparit.de
-- Flutura Fejzullahu    | Junior Developer          | Prishtina  | sq, en     | ff@comparit.de
-
-── BUSINESS ANALYSIS TEAM (Team Fachbereich) ────────────────────────────────
-Source: Standort-Informationen_erweitert.xlsx
-- Dörte Meins           | Product Owner             | Hamburg           | de, en | dm@comparit.de
-- Corinna Sevin         | Expert Business Analyst   | Hamburg           | de, en | cs@comparit.de
-- Tanja Nitsch          | Senior Business Analystin | Hamburg           | de, en | tn@comparit.de
-- Marvin Jordan         | Senior Business Analyst SUHK | Hamburg        | de, en | mj@comparit.de
-- Michael Portius       | Senior Business Analyst   | Remote Thüringen  | de, en | mpo@comparit.de
-- Eva Arfaoui-Holthey   | Business Analystin SUHK   | Hamburg           | de, en | eho@comparit.de
-- Chantal Voß           | Business Analystin KO/LV  | Hamburg           | de, en | cv@comparit.de
-- Bibiana Massimo       | Business Analyst          | Hamburg           | de, en | (not in source documents)
-- Justin Kleinschmidt   | Business Analyst Products | Hamburg           | de, en | jk@comparit.de
-- Lukas Hodel           | Business Analyst          | Hamburg           | de, en | lho@comparit.de
-
-── SALES & MARKETING / DESIGN ───────────────────────────────────────────────
-Source: organigram cpit.pdf (Stand: 01.03.2026)
-- Ribana Harkensee        | Referentin Products              | Hamburg    | de | rh@comparit.de
-- Markus Stüwer-Sklarek   | Support 1st Level / Datenanalyst | Remote NRW | de | mss@comparit.de
-- Niya Martines           | Design UI/LV                     | Hamburg    | de | (not in source documents)
-- Katarzyna Hausbrandt    | Design UI LV                     | Hamburg    | de | (not in source documents)
-
-── MANAGEMENT & SUPPORT ─────────────────────────────────────────────────────
-- Patrick von der Hagen | IT Spezialist             | Remote BW  | de, en | pvdh@comparit.de
-- Christine Simon       | Office Assistenz          | Hamburg    | de     | csi@comparit.de
-- Sandra Thomm          | Buchhaltung               | Remote NRW | de     | sth@comparit.de
-- Philipp Karkowski     | Werkstudent               | Hamburg    | de     | pk@comparit.de
-- Shkronja Babatinca    | Assistentin Abrechnung KO | Remote BW  | sq, de | sb@comparit.de
+${buildPeopleSection()}
 
 ── TOOLS ─────────────────────────────────────────────────────────────────────
 - Jira (comparit.atlassian.net) — Ticketing & sprint tracking

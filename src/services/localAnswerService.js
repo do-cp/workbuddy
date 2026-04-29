@@ -18,10 +18,10 @@ function bold(str) {
 }
 
 function personCard(p) {
+  const email = p.email ? ` | ${p.email}` : '';
   return (
-    `${bold(p.name)} — ${p.role}, ${p.office}\n` +
-    `Languages: ${p.languages.join(', ')}\n` +
-    `Focus: ${p.focus}`
+    `${bold(p.name)} — ${p.role}, ${p.office}${email}\n` +
+    `Languages: ${p.languages.join(', ')}`
   );
 }
 
@@ -80,17 +80,17 @@ function tryPeople(query, lang) {
 
   // "Who works on / who is the X?" — match by focus/role keywords
   const roleMap = [
-    { keys: ['qa', 'quality', 'testing', 'cypress', 'qa lead'], filter: (p) => p.role.toLowerCase().includes('qa') || p.focus.toLowerCase().includes('test') || p.focus.toLowerCase().includes('cypress') },
-    { keys: ['sign', 'cpit.sign', 'signature', 'signatures'], filter: (p) => p.focus.toLowerCase().includes('sign') },
-    { keys: ['usercenter', 'user center', 'admin portal'], filter: (p) => p.focus.toLowerCase().includes('usercenter') || p.focus.toLowerCase().includes('user center') },
-    { keys: ['advisory', 'advisory docs', 'beratung'], filter: (p) => p.focus.toLowerCase().includes('advisory') },
-    { keys: ['api layer', 'tariff', 'tarif'], filter: (p) => p.focus.toLowerCase().includes('api') || p.focus.toLowerCase().includes('tariff') },
-    { keys: ['frontend', 'front-end', 'design'], filter: (p) => p.focus.toLowerCase().includes('frontend') },
+    { keys: ['qa', 'quality', 'testing', 'cypress', 'qa lead'], filter: (p) => p.role.toLowerCase().includes('qa') || (p.focus || '').toLowerCase().includes('test') || (p.focus || '').toLowerCase().includes('cypress') },
+    { keys: ['sign', 'cpit.sign', 'signature', 'signatures'], filter: (p) => (p.focus || '').toLowerCase().includes('sign') },
+    { keys: ['usercenter', 'user center', 'admin portal'], filter: (p) => (p.focus || '').toLowerCase().includes('usercenter') || (p.focus || '').toLowerCase().includes('user center') },
+    { keys: ['advisory', 'advisory docs', 'beratung'], filter: (p) => (p.focus || '').toLowerCase().includes('advisory') },
+    { keys: ['api layer', 'tariff', 'tarif'], filter: (p) => (p.focus || '').toLowerCase().includes('api') || (p.focus || '').toLowerCase().includes('tariff') },
+    { keys: ['frontend', 'front-end', 'design'], filter: (p) => (p.focus || '').toLowerCase().includes('frontend') },
     { keys: ['product manager', 'product management'], filter: (p) => p.role.toLowerCase().includes('product') },
     { keys: ['operations', 'ops', 'events'], filter: (p) => p.role.toLowerCase().includes('operations') },
     // Use whole-word match for short ambiguous keys
-    { keys: [], wordKeys: ['ai', 'pm', 'qa'], filter: (p) => p.focus.toLowerCase().includes('ai'), wordFilter: ['ai'] },
-    { keys: ['pilot', 'cpit.pilot'], filter: (p) => p.focus.toLowerCase().includes('ai') },
+    { keys: [], wordKeys: ['ai', 'pm', 'qa'], filter: (p) => (p.focus || '').toLowerCase().includes('ai'), wordFilter: ['ai'] },
+    { keys: ['pilot', 'cpit.pilot'], filter: (p) => (p.focus || '').toLowerCase().includes('ai') },
     { keys: ['developer', 'entwickler'], filter: (p) => p.role.toLowerCase().includes('developer') },
   ];
 
