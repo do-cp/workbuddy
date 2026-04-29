@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "validate:answers": "node scripts/validateAnswers.js",
+    "validate:answers:local": "node scripts/validateAnswers.js --local",
+    "validate:answers:static": "node scripts/validateAnswers.js --static-only"
   },
   "dependencies": {
     "react": "^18.3.1",

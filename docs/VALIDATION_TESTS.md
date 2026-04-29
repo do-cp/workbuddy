@@ -241,7 +241,66 @@ A test **FAILS** if: the AI returns developers for Fachbereich questions, invent
 
 ---
 
-## Running These Tests
+## Running the Automated Validator
+
+The file `scripts/validateAnswers.js` runs all checks automatically and exits with code 1 on failure (CI-compatible).
+
+### Commands
+
+```bash
+# Run all static checks + live tests against production
+npm run validate:answers
+
+# Run all static checks + live tests against your local dev server
+npm run validate:answers:local
+
+# Run static checks only (no network calls — fast, works offline)
+npm run validate:answers:static
+
+# Run against a custom URL
+node scripts/validateAnswers.js --url https://my-preview.vercel.app
+```
+
+### What it checks
+
+**Static checks (S1–S6)** — no network required:
+- `S1` — `buildPrompt.js` imports all 5 source files
+- `S2` — all 6 dynamic builder functions exist
+- `S3` — `server/index.js` and `api/chat.js` both import `SYSTEM_PROMPT` from `buildPrompt.js`
+- `S4` — `knowledgeBase.js` has no dead exports (`baAssignments`, `devTeams`)
+- `S5` — internal source file names don't leak into the `SYSTEM_PROMPT` template
+- `S6` — key sections are present in the prompt (Fachbereich, Dev Teams, IT Support, Workflows, FOLLOWUPS, disambiguation rules)
+
+**Live API tests (T1–T6)** — sends real requests:
+- `T1` — Fachbereich vs Dev team disambiguation (4 cases)
+- `T2` — Email accuracy, including no-email-invented check (5 cases)
+- `T3` — New people from org chart (2 cases)
+- `T4` — Workflow questions: TI, Fondsliste, leave, sick, hours, expenses (6 cases)
+- `T5` — IT support routing: Dennis vs Patrick (3 cases)
+- `T6` — Work-time policy (3 cases)
+
+### What to check after adding new documents
+
+1. Add data to the appropriate `src/data/sources/*.js` file
+2. If adding people, update `src/data/knowledgeBase.js`
+3. Add new test cases to `scripts/validateAnswers.js` → `TEST_CASES` array
+4. Add manual test cases to this file under the appropriate test group
+5. Run `npm run validate:answers:static` first — catches import/structure issues
+6. Run `npm run validate:answers` — verifies live AI answers are correct
+
+### What passing/failing means
+
+| Result | Meaning |
+|--------|---------|
+| ✅ All passed | Data is wired correctly end-to-end; AI answers match expected facts |
+| ❌ Static failure | Architecture broken — check imports, builders, or dead exports |
+| ❌ Live failure on required term | AI is not seeing the data — check that the relevant builder is called in the SYSTEM_PROMPT template |
+| ❌ Live failure on forbidden term | AI is confusing sources — check disambiguation rules and source file separation |
+| ❌ Invented email | AI is hallucinating — verify `personLine()` outputs `(not in source documents)` for null emails |
+
+---
+
+## Running Tests Manually
 
 To test manually:
 1. Start the app locally (`npm run dev` + `npm run dev` in /server)
