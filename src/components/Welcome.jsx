@@ -115,7 +115,7 @@ export default function Welcome({ onPick, hasHistory, onResume }) {
       <div style={s.greetingRow}>
         <WorkBuddyAvatar size={48} />
         <div>
-          <h1 className="welcome-title" style={s.title}>Hi, I'm WorkBuddy.</h1>
+          <h1 className="welcome-title" style={s.title}>Hi, I'm your WorkBuddy.</h1>
         </div>
       </div>
 
