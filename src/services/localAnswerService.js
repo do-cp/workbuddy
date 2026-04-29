@@ -188,7 +188,7 @@ function tryMeetings(query, lang) {
   // Core hours
   if (contains(lq, 'core hours', 'kernzeit', 'core time', 'reachable', 'erreichbar')) {
     return {
-      answer: `Core hours at comparit are **10:00–15:00 CET**. Be reachable on Slack during this window — outside that you have flexibility.`,
+      answer: `Core hours at comparit are **09:00–15:00 CET** (Mon–Thu). Be reachable on **Teams** during this window — outside that you have flexibility.`,
       followUps: followUpsFor('schedule', lang),
     };
   }
@@ -246,12 +246,12 @@ function tryHolidays(query, lang) {
     return { answer: `**Public holidays in Kosovo**:\n\n${lines}`, followUps: followUpsFor('leave', lang) };
   }
   if (isGermany && !isKosovo) {
-    const lines = holidays.germany_hamburg.map((h) => `• ${h}`).join('\n');
+    const lines = holidays.germany_hamburg_public.map((h) => `• ${h}`).join('\n');
     return { answer: `**Public holidays in Hamburg, Germany**:\n\n${lines}`, followUps: followUpsFor('leave', lang) };
   }
 
   // Both or generic
-  const deLines = holidays.germany_hamburg.map((h) => `• ${h}`).join('\n');
+  const deLines = holidays.germany_hamburg_public.map((h) => `• ${h}`).join('\n');
   const ksLines = holidays.kosovo.map((h) => `• ${h}`).join('\n');
   return {
     answer: `**Hamburg, Germany**:\n${deLines}\n\n**Kosovo**:\n${ksLines}`,
@@ -386,18 +386,18 @@ function followUpsFor(category, lang) {
 
 const fallbacks = {
   English: [
-    "Hmm, I'm drawing a blank on that one 🤷 — try asking **Laimi** for office/ops questions, **#it-support** on Slack for technical stuff, or **hr@comparit.de** for formal HR matters.",
-    "I don't have that info yet 🕵️ — best bet is to check with your team lead or drop a message in the relevant Slack channel.",
+    "Hmm, I'm drawing a blank on that one 🤷 — try asking **Laimi** for office/ops questions, the **IT channel on Teams** for technical stuff, or **hr@comparit.de** for formal HR matters.",
+    "I don't have that info yet 🕵️ — best bet is to check with your team lead or drop a message in the relevant **Teams** channel.",
     "Not in my knowledge base yet 🧐 — **Laimi** in Hamburg is usually the first port of call for anything operational.",
   ],
   German: [
-    "Da tappe ich im Dunkeln 🤷 — frag mal **Laimi** für Office-Sachen, **#it-support** auf Slack für Tech-Fragen oder **hr@comparit.de** für HR-Anliegen.",
-    "Das weiß ich leider nicht 🕵️ — dein Teamlead oder ein kurzes Slack-DM hilft da am schnellsten weiter.",
+    "Da tappe ich im Dunkeln 🤷 — frag mal **Laimi** für Office-Sachen, den **IT-Kanal auf Teams** für Tech-Fragen oder **hr@comparit.de** für HR-Anliegen.",
+    "Das weiß ich leider nicht 🕵️ — dein Teamlead oder eine kurze Teams-Nachricht hilft da am schnellsten weiter.",
     "Das steht noch nicht in meiner Wissensdatenbank 🧐 — **Laimi** hat meistens den besten Überblick.",
   ],
   Albanian: [
-    "Nuk e di atë 🤷 — provoje të pyesësh **Laimi** për çështje zyre, **#it-support** në Slack për teknikë, ose **hr@comparit.de** për HR.",
-    "Nuk kam atë informacion ende 🕵️ — team leadi yt ose një mesazh në Slack do të ndihmojë.",
+    "Nuk e di atë 🤷 — provoje të pyesësh **Laimi** për çështje zyre, kanalin **IT në Teams** për teknikë, ose **hr@comparit.de** për HR.",
+    "Nuk kam atë informacion ende 🕵️ — team leadi yt ose një mesazh në **Teams** do të ndihmojë.",
     "Kjo nuk është në bazën time të njohurive 🧐 — **Laimi** zakonisht di gjithçka për operacionet.",
   ],
 };
