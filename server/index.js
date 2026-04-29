@@ -89,9 +89,11 @@ Phone: 040 80 81 41 50 | Email: info@comparit.de | Office hours: Mon–Thu 09:00
 Hamburg address: Hopfensack 19, 20457 Hamburg
 Prishtina address: Ruga Tirana C4/2 -L14/2, 100 Prishtina, Kosovo
 
-PARTNER COMPANY — wisotech: Related IT company that shares leadership and some staff with comparit.
-CEO wisotech: Dr. Ing. Dirk Sommermeyer | CTO wisotech: Ylle Dragaj (shared with comparit)
-Key wisotech staff working with comparit: Behar Simnica (Expert Dev / Team Lead KO), Shpend Bajgora (Senior Angular Dev), Korab Qarri, Lorik Haxhidauti, Argim Kaliqi, Qëndresa Rexhbogaj (Expert Dev)
+PARTNER COMPANY — wisotech (Stand: 01.05.2026):
+CEO: Dr. Ing. Dirk Sommermeyer | CEO (comparit side): Matthias Brauch | CTO: Ylle Dragaj (shared with comparit)
+Administration: Laimi Pester (Assistance/Admin, lp@comparit.de), Shkronja Babatinca (Assistance/Admin KO, sb@comparit.de), Cornelia Rieger (Project Management PO), Patrick von der Hagen (IT Administration, pvdh@comparit.de)
+Design: Sebastian Houshmand (Design UI/UX)
+Dev Team (Prishtina): Behar Simnica (Expert Dev / Team Lead KO, bs@comparit.de), Qëndresa Rexhbogaj (Expert Dev), Shpend Bajgora (Senior Dev, shpend@comparit.de), Lorik Haxhidauti (Senior Dev, lh@comparit.de), Korab Qarri (Senior Dev, kq@comparit.de), Muhamed Zeqiri (Senior Dev), Fisnik Kusari (Dev), Ag Hamiti (Junior Dev)
 
 ── LEADERSHIP ────────────────────────────────────────────────────────────────
 - Matthias Brauch       | CEO   | Hamburg               | deutsch, englisch          | mb@comparit.de
@@ -283,6 +285,45 @@ Accounting → Sandra Thomm (sth@comparit.de) | Shkronja Babatinca Kosovo (sb@co
 Work time / overtime → Axel Karkowski (ak@comparit.de)
 Business travel / booking → Laimi Pester (lp@comparit.de)
 SharePoint access → Dennis (IT-TEC) via IT channel
+
+── WORKFLOWS (Step-by-step guides) ──────────────────────────────────────
+HOW TO REQUEST LEAVE:
+1. Open Personio (login via SSO / Microsoft account). Go to "Abwesenheiten" → "Abwesenheit beantragen".
+2. Select type: Urlaub. Choose dates. Enter your substitute (Vertretung) — mandatory.
+3. Submit. Your team lead is notified and approves/declines.
+4. Once approved: mark dates as "Abwesend" in your Outlook calendar.
+Rule: submit at least 2 weeks in advance. Contact Laimi (lp@comparit.de) for Personio help.
+
+HOW TO LOG WORKING HOURS (TEMPO):
+1. Open Jira → click "Tempo" in left sidebar.
+2. Select the relevant Jira ticket or project row.
+3. Enter date, hours, and a short description of what you worked on.
+4. Save. Hours appear in your Tempo timesheet.
+Rule: log daily or at least weekly. Overtime requires prior team lead approval.
+
+HOW TO REPORT SICK:
+1. Report in Personio (Abwesenheit → Krankmeldung) OR call/message your team lead — before 09:00 AM on day 1.
+2. Continue reporting each working day if absence extends (or as agreed with team lead).
+3. From day 4: submit a doctor's sick note (Attest / AU) to hr@comparit.de and inform Laimi.
+Child illness (Germany): report in Personio — up to 15 days/child/year (§45 SGB V).
+
+HOW TO SUBMIT EXPENSES:
+1. Under €25: submit receipt directly to Sandra Thomm (sth@comparit.de).
+2. Over €25: get written team lead approval first, then submit.
+3. Download the expense form from SharePoint: "Vorlage_Reisekostenabrechnung cpit.xlsx".
+4. Fill in the form, attach all receipts, send to Sandra Thomm.
+
+HOW TO BOOK BUSINESS TRAVEL:
+1. Contact Laimi (lp@comparit.de) — she books flights, trains, and hotels.
+2. Suggest your preferred route and times in advance.
+3. Register the trip in Personio as a business trip.
+4. After returning: fill in expense form (SharePoint), attach receipts, send to Sandra Thomm.
+Policy questions → Axel Karkowski (ak@comparit.de).
+
+HOW TO REPORT AN IT ISSUE:
+1. Contact Patrick von der Hagen (pvdh@comparit.de) directly, or write in the IT Teams channel.
+2. Describe clearly: device, software, error message.
+3. SharePoint access/permissions: contact Dennis (IT-TEC) via the IT Teams channel.
 `;
 
 // ─── Chat endpoint ────────────────────────────────────────────────────────────

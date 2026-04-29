@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { people } from '../data/knowledgeBase.js';
+import { people, wisotechPeople } from '../data/knowledgeBase.js';
 
 // ── i18n ──────────────────────────────────────────────────────────────────────
 function getLang() {
@@ -8,8 +8,6 @@ function getLang() {
   if (l.startsWith('de')) return 'de';
   return 'en';
 }
-const TITLES = { en: 'comparit Org Chart', de: 'comparit Organigramm', sq: 'Organigrami i comparit' };
-const SUBTITLES = { en: 'people · Click any card to see contact details', de: 'Personen · Auf eine Karte klicken für Details', sq: 'persona · Kliko çdo kartë për detaje' };
 const SEARCH_PH = { en: 'Search by name, role, team or location…', de: 'Suche nach Name, Rolle, Team oder Standort…', sq: 'Kërko sipas emrit, rolit, ekipit ose vendndodhjes…' };
 const COPIED_LABEL = { en: 'Copied!', de: 'Kopiert!', sq: 'Kopjuar!' };
 
@@ -153,6 +151,11 @@ function PersonCard({ person, isLeader = false, compact = false }) {
               </button>
             </div>
           )}
+          {!person.email && (
+            <div style={{ fontSize: 12, color: 'var(--color-muted)', fontStyle: 'italic' }}>
+              No email listed
+            </div>
+          )}
           {person.languages?.length > 0 && (
             <div style={{ fontSize: 12, color: 'var(--color-muted)' }}>
               🗣️ {person.languages.join(', ')}
@@ -187,7 +190,6 @@ function TeamSection({ teamName, members }) {
 
   return (
     <div style={{ marginBottom: 24 }}>
-      {/* Team header */}
       <button
         onClick={() => setCollapsed(v => !v)}
         style={{
@@ -239,19 +241,55 @@ function TeamSection({ teamName, members }) {
   );
 }
 
+// ── Company selector tab ──────────────────────────────────────────────────────
+function CompanyTab({ label, logo, active, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        padding: '10px 16px',
+        background: active ? '#FFFFFF' : 'transparent',
+        border: 'none',
+        borderBottom: active ? '2px solid var(--color-primary)' : '2px solid transparent',
+        cursor: 'pointer',
+        fontFamily: 'var(--font-heading)',
+        fontWeight: active ? 700 : 500,
+        fontSize: 14,
+        color: active ? 'var(--color-dark-blue)' : 'var(--color-muted)',
+        transition: 'all 0.15s',
+      }}
+    >
+      {logo && (
+        <img src={logo} alt="" height={20} style={{ objectFit: 'contain', display: 'block' }} />
+      )}
+      {label}
+    </button>
+  );
+}
+
 // ── Main OrgChart component ───────────────────────────────────────────────────
 export default function OrgChart({ onClose }) {
   const [search, setSearch] = useState('');
+  const [company, setCompany] = useState('cpit'); // 'cpit' | 'wisotech'
   const lang = getLang();
 
-  const leaders = people.filter(p => LEADERSHIP_ROLES.includes(p.role));
-  const nonLeaders = people.filter(p => !LEADERSHIP_ROLES.includes(p.role));
+  const activepeople = company === 'cpit' ? people : wisotechPeople;
 
-  const teamOrder = ['Development', 'Business Analysis', 'Integrations', 'Sales & Marketing', 'Management'];
+  const leaders = activepeople.filter(p => LEADERSHIP_ROLES.includes(p.role));
+  const nonLeaders = activepeople.filter(p => !LEADERSHIP_ROLES.includes(p.role));
+
+  const teamOrder = company === 'cpit'
+    ? ['Development', 'Business Analysis', 'Integrations', 'Sales & Marketing', 'Management']
+    : ['Development', 'Management'];
 
   // Filter by search
   const filtered = search.trim()
-    ? people.filter(p =>
+    ? activepeople.filter(p =>
         `${p.name} ${p.role} ${p.team} ${p.office} ${p.languages?.join(' ')}`.toLowerCase()
           .includes(search.toLowerCase())
       )
@@ -263,6 +301,16 @@ export default function OrgChart({ onClose }) {
     if (members.length) acc[t] = members;
     return acc;
   }, {});
+
+  const titles = {
+    cpit: { en: 'comparit Org Chart', de: 'comparit Organigramm', sq: 'Organigrami i comparit' },
+    wisotech: { en: 'wisoTech Org Chart', de: 'wisoTech Organigramm', sq: 'Organigrami i wisoTech' },
+  };
+  const subtitles = {
+    en: 'people · Click any card to see contact details',
+    de: 'Personen · Auf eine Karte klicken für Details',
+    sq: 'persona · Kliko çdo kartë për detaje',
+  };
 
   return (
     <div style={{
@@ -300,10 +348,10 @@ export default function OrgChart({ onClose }) {
                 fontWeight: 700, fontSize: 17,
                 color: 'var(--color-dark-blue)',
               }}>
-                {TITLES[lang]}
+                {titles[company][lang]}
               </div>
               <div style={{ fontSize: 12, color: 'var(--color-muted)', marginTop: 2 }}>
-                {people.length} {SUBTITLES[lang]}
+                {activepeople.length} {subtitles[lang]}
               </div>
             </div>
           </div>
@@ -321,6 +369,26 @@ export default function OrgChart({ onClose }) {
           >
             ✕
           </button>
+        </div>
+
+        {/* Company selector tabs */}
+        <div style={{
+          display: 'flex',
+          borderBottom: '1px solid var(--color-border)',
+          background: 'var(--color-light-gray)',
+          flexShrink: 0,
+        }}>
+          <CompanyTab
+            label="CPIT comparit"
+            logo="/assets/cpit-logo-dark.png"
+            active={company === 'cpit'}
+            onClick={() => { setCompany('cpit'); setSearch(''); }}
+          />
+          <CompanyTab
+            label="wisoTech"
+            active={company === 'wisotech'}
+            onClick={() => { setCompany('wisotech'); setSearch(''); }}
+          />
         </div>
 
         {/* Search bar */}

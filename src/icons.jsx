@@ -12,17 +12,12 @@ const Icon = ({ children, size = 24, style = {} }) => (
 );
 
 export const ShieldLogo = ({ size = 32 }) => (
-  <svg
-    width={size}
+  <img
+    src="/assets/cpit-logo-dark.png"
+    alt="comparit"
     height={size}
-    viewBox="0 0 100 100"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    style={{ display: 'block' }}
-  >
-    <path d="M52 8 L92 16 L92 50 L52 50 Z" fill="#0AB7A7" />
-    <path d="M48 36 L48 92 A44 44 0 0 1 4 48 L8 48 L8 36 Z" fill="#1B1C50" />
-  </svg>
+    style={{ display: 'block', objectFit: 'contain', width: 'auto', maxHeight: size }}
+  />
 );
 
 export const PeopleIcon = ({ size = 22 }) => (

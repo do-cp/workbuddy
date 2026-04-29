@@ -80,6 +80,29 @@ export const people = [
   { name: 'Shkronja Babatinca',     role: 'Assistentin Abrechnung Kosovo',  team: 'Management',         office: 'Remote (Baden-Württemberg)', languages: ['Albanian', 'German'],            email: 'sb@comparit.de' },
 ];
 
+// ── wisoTech org chart people (Stand: 01.05.2026) ────────────────────────────
+export const wisotechPeople = [
+  // Leadership
+  { name: 'Dr. Ing. Dirk Sommermeyer', role: 'CEO',                              team: 'Management',  office: 'Germany',                    languages: ['German'],                        email: '' },
+  { name: 'Matthias Brauch',           role: 'CEO',                              team: 'Management',  office: 'Hamburg',                    languages: ['German', 'English'],             email: 'mb@comparit.de' },
+  { name: 'Ylle Dragaj',               role: 'CTO',                              team: 'Development', office: 'Remote (Baden-Württemberg)', languages: ['German', 'English', 'Albanian'], email: 'yd@comparit.de' },
+  // Administration
+  { name: 'Laimi Pester',              role: 'Assistance / Administration',      team: 'Management',  office: 'Remote (Brandenburg)',       languages: ['German', 'English'],             email: 'lp@comparit.de' },
+  { name: 'Shkronja Babatinca',        role: 'Assistance / Administration KO',   team: 'Management',  office: 'Remote (Baden-Württemberg)', languages: ['Albanian', 'German'],            email: 'sb@comparit.de' },
+  { name: 'Cornelia Rieger',           role: 'Project Management, PO',           team: 'Management',  office: 'Germany',                    languages: ['German'],                        email: '' },
+  { name: 'Patrick von der Hagen',     role: 'IT Administration',                team: 'Management',  office: 'Remote (Baden-Württemberg)', languages: ['German', 'English'],             email: 'pvdh@comparit.de' },
+  // Design & Development
+  { name: 'Sebastian Houshmand',       role: 'Design UI / UX',                   team: 'Development', office: 'Germany',                    languages: ['German', 'English'],             email: '' },
+  { name: 'Behar Simnica',             role: 'Expert Developer / Team Lead KO',  team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: 'bs@comparit.de' },
+  { name: 'Qëndresa Rexhbogaj',        role: 'Expert Developer',                 team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  { name: 'Shpend Bajgora',            role: 'Senior Developer',                 team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: 'shpend@comparit.de' },
+  { name: 'Lorik Haxhidauti',          role: 'Senior Developer',                 team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: 'lh@comparit.de' },
+  { name: 'Korab Qarri',               role: 'Senior Developer',                 team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: 'kq@comparit.de' },
+  { name: 'Muhamed Zeqiri',            role: 'Senior Developer',                 team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  { name: 'Fisnik Kusari',             role: 'Developer',                        team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  { name: 'Ag Hamiti',                 role: 'Junior Developer',                 team: 'Development', office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+];
+
 export const tools = [
   { name: 'Jira',             url: 'comparit.atlassian.net',                          purpose: 'Ticketing & sprint tracking' },
   { name: 'Confluence',       url: 'comparit.atlassian.net/wiki',                     purpose: 'Documentation & wiki' },
@@ -372,6 +395,19 @@ export const categories = [
       'What changed with the 4-day week?',
       "What's the new SharePoint URL?",
       'Latest team updates',
+    ],
+  },
+  {
+    id: 'workflows',
+    emoji: '⚙️',
+    iconBg: '#E8F4FF',
+    label: 'Workflows',
+    sublabel: 'Processes & step-by-step guides',
+    suggestions: [
+      'How do I request leave in Personio?',
+      'How do I log time in Tempo?',
+      'How do I submit expenses?',
+      'How do I report sick?',
     ],
   },
 ];

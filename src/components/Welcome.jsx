@@ -2,8 +2,54 @@ import { useState } from 'react';
 import { WorkBuddyAvatar } from '../icons.jsx';
 import { categories } from '../data/knowledgeBase.js';
 
+// ── i18n translations ─────────────────────────────────────────────────────────
+const UI = {
+  en: {
+    title: "Hi, I'm your WorkBuddy.",
+    subtitle: 'Your shortcut to everything inside comparit — people, tools, policies, holidays, and who to ask.',
+    subtitleLangs: 'Ask me anything in English, Deutsch, or Shqip.',
+    browse: 'Browse by topic',
+    resume: '← Resume your conversation',
+    categories: {
+      people:    { label: 'People & Teams',       sublabel: 'Find who works on what' },
+      it:        { label: 'IT & Tools',            sublabel: 'Tools, access, setup' },
+      leave:     { label: 'Leave & Absence',       sublabel: 'Vacation, sick days, policy' },
+      schedule:  { label: 'Schedules & Rhythm',    sublabel: 'Standups, sprints, all-hands' },
+      office:    { label: 'Office & Operations',   sublabel: 'Hamburg, Prishtina, remote' },
+      glossary:  { label: 'Glossary',              sublabel: 'Abbreviations & insurance terms' },
+      news:      { label: 'News & Updates',        sublabel: "Announcements, what's new" },
+      workflows: { label: 'Workflows',             sublabel: 'Processes & step-by-step guides' },
+    },
+  },
+  de: {
+    title: 'Hallo, ich bin dein WorkBuddy.',
+    subtitle: 'Dein Shortcut zu allem bei comparit — Personen, Tools, Richtlinien, Feiertage und wer zuständig ist.',
+    subtitleLangs: 'Stell mir Fragen auf Englisch, Deutsch oder Albanisch.',
+    browse: 'Nach Thema suchen',
+    resume: '← Gespräch fortsetzen',
+    categories: {
+      people:    { label: 'Personen & Teams',      sublabel: 'Wer arbeitet woran' },
+      it:        { label: 'IT & Tools',            sublabel: 'Tools, Zugang, Einrichtung' },
+      leave:     { label: 'Urlaub & Abwesenheit',  sublabel: 'Urlaub, Kranktage, Richtlinien' },
+      schedule:  { label: 'Meetings & Rhythmus',   sublabel: 'Standups, Sprints, All-Hands' },
+      office:    { label: 'Büro & Betrieb',        sublabel: 'Hamburg, Prishtina, Remote' },
+      glossary:  { label: 'Glossar',               sublabel: 'Abkürzungen & Versicherungsbegriffe' },
+      news:      { label: 'News & Updates',        sublabel: 'Ankündigungen, Neuigkeiten' },
+      workflows: { label: 'Arbeitsabläufe',        sublabel: 'Prozesse & Schritt-für-Schritt' },
+    },
+  },
+};
+
 const s = {
   wrap: { padding: '48px 24px 24px', maxWidth: 760, margin: '0 auto' },
+  topRow: { display: 'flex', justifyContent: 'flex-end', marginBottom: 16 },
+  langToggle: {
+    display: 'flex',
+    border: '1px solid var(--color-border)',
+    borderRadius: 8,
+    overflow: 'hidden',
+    background: '#FFFFFF',
+  },
   greetingRow: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 },
   title: {
     fontFamily: 'var(--font-heading)',
@@ -62,7 +108,6 @@ const s = {
     justifyContent: 'center',
     flexShrink: 0,
   },
-  cardIconActive: { background: '#FFFFFF' },
   cardLabel: { fontSize: 14, fontWeight: 600, color: 'var(--color-dark-blue)', lineHeight: 1.2 },
   cardSub: { fontSize: 12, color: 'var(--color-muted)', marginTop: 3, lineHeight: 1.3 },
   suggestList: { marginTop: 18, display: 'flex', flexDirection: 'column', gap: 8 },
@@ -101,37 +146,69 @@ const s = {
 
 export default function Welcome({ onPick, hasHistory, onResume }) {
   const [activeId, setActiveId] = useState(null);
+  const [lang, setLang] = useState(() => {
+    const l = navigator.language?.toLowerCase() || '';
+    return l.startsWith('de') ? 'de' : 'en';
+  });
+
+  const t = UI[lang];
   const active = categories.find((c) => c.id === activeId);
+
+  function LangBtn({ code, label }) {
+    const isActive = lang === code;
+    return (
+      <button
+        onClick={() => setLang(code)}
+        style={{
+          padding: '5px 12px',
+          border: 'none',
+          background: isActive ? 'var(--color-primary)' : 'transparent',
+          color: isActive ? '#FFFFFF' : 'var(--color-muted)',
+          fontWeight: isActive ? 700 : 500,
+          fontSize: 12,
+          cursor: 'pointer',
+          fontFamily: 'var(--font-body)',
+          transition: 'all 0.15s',
+        }}
+      >
+        {label}
+      </button>
+    );
+  }
 
   return (
     <div style={s.wrap}>
+      {/* Language toggle */}
+      <div style={s.topRow}>
+        <div style={s.langToggle}>
+          <LangBtn code="en" label="EN" />
+          <LangBtn code="de" label="DE" />
+        </div>
+      </div>
+
       {hasHistory && (
         <button className="cat-chip" style={s.resumeBtn} onClick={onResume}>
-          <span style={{ color: 'var(--color-primary)' }}>←</span>
-          <span>Resume your conversation</span>
+          {t.resume}
         </button>
       )}
 
       <div style={s.greetingRow}>
         <WorkBuddyAvatar size={48} />
         <div>
-          <h1 className="welcome-title" style={s.title}>Hi, I'm your WorkBuddy.</h1>
+          <h1 className="welcome-title" style={s.title}>{t.title}</h1>
         </div>
       </div>
 
       <p style={s.subtitle}>
-        Your shortcut to everything inside{' '}
-        <strong style={{ color: 'var(--color-dark-blue)' }}>comparit</strong> — people, tools,
-        policies, holidays, and who to ask. Ask me anything in{' '}
-        <strong style={{ color: 'var(--color-dark-blue)' }}>English</strong>,{' '}
-        <strong style={{ color: 'var(--color-dark-blue)' }}>Deutsch</strong>, or{' '}
-        <strong style={{ color: 'var(--color-dark-blue)' }}>Shqip</strong>.
+        {t.subtitle}{' '}
+        <span style={{ color: 'var(--color-dark-blue)', fontWeight: 600 }}>{t.subtitleLangs}</span>
       </p>
 
-      <div style={s.sectionLabel}>Browse by topic</div>
+      <div style={s.sectionLabel}>{t.browse}</div>
       <div style={s.grid}>
         {categories.map((cat) => {
           const isActive = activeId === cat.id;
+          const catT = t.categories[cat.id] || { label: cat.label, sublabel: cat.sublabel };
           return (
             <button
               key={cat.id}
@@ -143,8 +220,8 @@ export default function Welcome({ onPick, hasHistory, onResume }) {
                 <span style={{ fontSize: 20, lineHeight: 1 }}>{cat.emoji}</span>
               </div>
               <div style={{ minWidth: 0 }}>
-                <div style={s.cardLabel}>{cat.label}</div>
-                <div style={s.cardSub}>{cat.sublabel}</div>
+                <div style={s.cardLabel}>{catT.label}</div>
+                <div style={s.cardSub}>{catT.sublabel}</div>
               </div>
             </button>
           );
