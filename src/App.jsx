@@ -107,7 +107,12 @@ export default function App() {
   return (
     <div style={shellStyle}>
       {showOrgChart && <OrgChart onClose={() => setShowOrgChart(false)} />}
-      <Header onNewChat={startNewChat} hasMessages={viewingChat} onOrgChart={() => setShowOrgChart(true)} />
+      <Header
+        onNewChat={startNewChat}
+        hasMessages={viewingChat}
+        onOrgChart={() => setShowOrgChart(true)}
+        onLogoClick={() => { if (hasMessages) setShowWelcome(true); }}
+      />
       <div style={mainStyle}>
         {viewingChat ? (
           <Messages messages={messages} isTyping={isTyping} onPickFollow={sendMessage} />

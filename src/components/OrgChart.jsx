@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import { people, wisotechPeople } from '../data/knowledgeBase.js';
 
+// ── Language helper — handles both string[] and { lang, src }[] formats ───────
+// Filters out null-src (undocumented) entries so they never show in the UI.
+function langDisplay(languages) {
+  if (!languages || !languages.length) return null;
+  const names = languages
+    .filter(l => typeof l === 'string' || l.src !== null)
+    .map(l => typeof l === 'string' ? l : l.lang)
+    .filter(Boolean);
+  return names.length ? names.join(', ') : null;
+}
+
 // ── i18n ──────────────────────────────────────────────────────────────────────
 function getLang() {
   const l = navigator.language?.toLowerCase() || '';
@@ -156,9 +167,9 @@ function PersonCard({ person, isLeader = false, compact = false }) {
               No email listed
             </div>
           )}
-          {person.languages?.length > 0 && (
+          {langDisplay(person.languages) && (
             <div style={{ fontSize: 12, color: 'var(--color-muted)' }}>
-              🗣️ {person.languages.join(', ')}
+              🗣️ {langDisplay(person.languages)}
             </div>
           )}
           {person.team && (
@@ -289,10 +300,11 @@ export default function OrgChart({ onClose }) {
 
   // Filter by search
   const filtered = search.trim()
-    ? activepeople.filter(p =>
-        `${p.name} ${p.role} ${p.team} ${p.office} ${p.languages?.join(' ')}`.toLowerCase()
-          .includes(search.toLowerCase())
-      )
+    ? activepeople.filter(p => {
+        const langs = langDisplay(p.languages) || '';
+        return `${p.name} ${p.role} ${p.team} ${p.office} ${langs}`.toLowerCase()
+          .includes(search.toLowerCase());
+      })
     : null;
 
   // Group non-leaders by team

@@ -52,6 +52,105 @@ function fail(id, label, detail) {
   failures.push({ id, label, detail });
 }
 
+// ── Static data-integrity checks ──────────────────────────────────────────────
+async function runDataIntegrityChecks() {
+  console.log('\n🔍 DATA INTEGRITY CHECKS\n');
+
+  // Dynamically import the data (ES module)
+  let people, wisotechPeople;
+  try {
+    const kb = await import('../src/data/knowledgeBase.js');
+    people = kb.people;
+    wisotechPeople = kb.wisotechPeople;
+  } catch (err) {
+    fail('D0', 'knowledgeBase.js loads without error', err.message);
+    return;
+  }
+
+  // D1 — No [object Object] in languages: every entry must be a string or { lang, src }
+  let objectObjCount = 0;
+  for (const p of [...people, ...wisotechPeople]) {
+    for (const l of (p.languages || [])) {
+      if (typeof l !== 'string' && (typeof l.lang !== 'string')) {
+        objectObjCount++;
+        fail('D1', `Language entry for ${p.name} has no .lang string`, JSON.stringify(l));
+      }
+    }
+  }
+  if (objectObjCount === 0) pass('D1', 'All language entries are strings or { lang, src } objects — no [object Object]');
+
+  // D2 — People with empty email must have null language sources (cannot confirm doc)
+  for (const p of people) {
+    if (!p.email) {
+      const hasSourcedLang = (p.languages || []).some(l => typeof l === 'object' && l.src !== null);
+      if (hasSourcedLang) {
+        fail('D2', `${p.name} has no email but has a sourced (non-null) language`, 'Cannot verify language source without email confirmation');
+      }
+    }
+  }
+  const noEmailUnsourcedOk = people.filter(p => !p.email).every(p =>
+    (p.languages || []).every(l => typeof l === 'string' || l.src === null)
+  );
+  if (noEmailUnsourcedOk) pass('D2', 'All no-email people have null-source languages ✓');
+
+  // D3 — No Hamburg person has documented Albanian (sourced)
+  const hamburgAlbanian = people.filter(p =>
+    p.office === 'Hamburg' &&
+    (p.languages || []).some(l => {
+      const name = typeof l === 'string' ? l : l.lang;
+      const src  = typeof l === 'string' ? 'str' : l.src;
+      return name === 'Albanian' && src !== null;
+    })
+  );
+  if (hamburgAlbanian.length === 0) {
+    pass('D3', 'No Hamburg person has documented Albanian — language hallucination prevented ✓');
+  } else {
+    fail('D3', 'Hamburg person(s) with documented Albanian detected', hamburgAlbanian.map(p => p.name).join(', '));
+  }
+
+  // D4 — Justin Kleinschmidt has NO Albanian at all
+  const justin = people.find(p => p.name === 'Justin Kleinschmidt');
+  if (!justin) {
+    fail('D4', 'Justin Kleinschmidt found in people[]', 'Person missing from data');
+  } else {
+    const hasAlbanian = (justin.languages || []).some(l => (typeof l === 'string' ? l : l.lang) === 'Albanian');
+    if (hasAlbanian) fail('D4', 'Justin Kleinschmidt must NOT have Albanian', 'Albanian found in his language list');
+    else pass('D4', 'Justin Kleinschmidt has no Albanian ✓');
+  }
+
+  // D5 — Ylle Dragaj has documented Albanian
+  const ylle = people.find(p => p.name === 'Ylle Dragaj');
+  if (!ylle) {
+    fail('D5', 'Ylle Dragaj found in people[]', 'Person missing from data');
+  } else {
+    const hasAlbanian = (ylle.languages || []).some(l => {
+      const name = typeof l === 'string' ? l : l.lang;
+      const src  = typeof l === 'string' ? 'str' : l.src;
+      return name === 'Albanian' && src !== null;
+    });
+    if (hasAlbanian) pass('D5', 'Ylle Dragaj has documented Albanian ✓');
+    else fail('D5', 'Ylle Dragaj missing documented Albanian', 'Albanian either missing or has null source');
+  }
+
+  // D6 — Every person has _src metadata
+  const missingSrc = [...people, ...wisotechPeople].filter(p => !p._src);
+  if (missingSrc.length === 0) pass('D6', 'All people have _src per-field metadata ✓');
+  else fail('D6', `${missingSrc.length} people missing _src metadata`, missingSrc.map(p => p.name).join(', '));
+
+  // D7 — KFZ project does NOT contain Timo Wickboldt (he is TI & Infra)
+  let projects;
+  try {
+    const kb = await import('../src/data/knowledgeBase.js');
+    projects = kb.projects;
+  } catch { projects = []; }
+  const kfzProject = projects.find(p => p.name === 'KFZ');
+  if (kfzProject && kfzProject.contacts.includes('Timo Wickboldt')) {
+    fail('D7', 'KFZ project must not list Timo Wickboldt (he is TI & Infra)', 'Remove from KFZ contacts');
+  } else {
+    pass('D7', 'KFZ project contacts do not include Timo Wickboldt ✓');
+  }
+}
+
 // ── Static checks ─────────────────────────────────────────────────────────────
 function readFile(rel) {
   return readFileSync(resolve(root, rel), 'utf8');
@@ -209,9 +308,10 @@ const TEST_CASES = [
   {
     id: 'T2b',
     q: 'What is Argim Kaliqi email?',
-    required: ['ak@comparit.de'],
-    forbidden: [],
-    note: 'Argim Kaliqi email from knowledgeBase.js',
+    // Argim has a wisotech.de email (unique — only non-comparit.de in people[])
+    required: ['argim.kaliqi@wisotech.de'],
+    forbidden: ['ak@comparit.de'],
+    note: 'Argim Kaliqi email is argim.kaliqi@wisotech.de (wisotech domain, not comparit)',
   },
   {
     id: 'T2c',
@@ -631,6 +731,7 @@ async function main() {
   console.log(`  Mode:   ${staticOnly ? 'static checks only' : isLocal ? 'local' : 'production'}`);
 
   runStaticChecks();
+  await runDataIntegrityChecks();
 
   if (!staticOnly) {
     await runLiveTests();

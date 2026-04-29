@@ -65,12 +65,30 @@ const s = {
   },
 };
 
-export default function Header({ onNewChat, hasMessages, onOrgChart }) {
+export default function Header({ onNewChat, hasMessages, onOrgChart, onLogoClick }) {
   return (
     <header style={s.bar}>
       <div className="header-inner" style={s.inner}>
         <div style={s.left}>
-          <ShieldLogo size={36} />
+          <button
+            onClick={onLogoClick}
+            aria-label="Go to homepage"
+            title="Go to homepage"
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              borderRadius: 8,
+              transition: 'opacity 0.15s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.7'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          >
+            <ShieldLogo size={36} />
+          </button>
           <div style={s.brandStack}>
             <div>
               <div style={s.productName}>WorkBuddy</div>

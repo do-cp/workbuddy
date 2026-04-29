@@ -269,6 +269,8 @@ export const people = [
     _src: { role: SRC.TEAMS_DEV, email: SRC.TEAMS_DEV, office: SRC.STANDORT },
   },
   {
+    // NOTE: Argim Kaliqi has a wisotech.de email (the only person in people[] with a non-comparit domain).
+    // He does not appear in devTeams.js. Email source unclear — keep as documented, flag for verification.
     name: "Argim Kaliqi",
     role: "Mid Developer",
     team: "Development",
@@ -278,7 +280,7 @@ export const people = [
       L("English",  SRC.STANDORT),
     ],
     email: "argim.kaliqi@wisotech.de",
-    _src: { role: SRC.TEAMS_DEV, email: SRC.TEAMS_DEV, office: SRC.STANDORT },
+    _src: { role: SRC.STANDORT, email: SRC.STANDORT, office: SRC.STANDORT },
   },
   {
     name: "Lirim Imeri",
@@ -407,9 +409,10 @@ export const people = [
     role: "Frontend Developer",
     team: "Development",
     office: "Prishtina",
+    // email missing → cannot confirm Standort doc contains this person → languages unverified
     languages: [
-      L("Albanian", SRC.STANDORT),
-      L("English",  SRC.STANDORT),
+      L("Albanian", null),
+      L("English",  null),
     ],
     email: "",
     _src: { role: SRC.TEAMS_DEV, email: null, office: SRC.STANDORT },
@@ -419,9 +422,10 @@ export const people = [
     role: "Senior Developer",
     team: "Development",
     office: "Prishtina",
+    // email missing → cannot confirm Standort doc contains this person → languages unverified
     languages: [
-      L("Albanian", SRC.STANDORT),
-      L("English",  SRC.STANDORT),
+      L("Albanian", null),
+      L("English",  null),
     ],
     email: "",
     _src: { role: SRC.TEAMS_DEV, email: null, office: SRC.STANDORT },
@@ -431,9 +435,10 @@ export const people = [
     role: "Intern",
     team: "Development",
     office: "Prishtina",
+    // email missing → cannot confirm Standort doc contains this person → languages unverified
     languages: [
-      L("Albanian", SRC.STANDORT),
-      L("English",  SRC.STANDORT),
+      L("Albanian", null),
+      L("English",  null),
     ],
     email: "",
     _src: { role: SRC.TEAMS_DEV, email: null, office: SRC.STANDORT },
@@ -1092,11 +1097,11 @@ export const projects = [
     name: "KFZ",
     description: "Motor vehicle insurance comparison",
     teams: ["KFZ"],
+    // Timo Wickboldt removed — he is TI & Infra, not KFZ (confirmed via devTeams.js)
     contacts: [
       "Lirim Imeri",
       "Bleron Morina",
       "Arianit Gashi",
-      "Timo Wickboldt",
     ],
   },
   {
