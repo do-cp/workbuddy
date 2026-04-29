@@ -517,6 +517,61 @@ const TEST_CASES = [
     },
     note: 'Unknown abbreviation ZXQW must be refused — not answered from general knowledge',
   },
+
+  // ── T11: Language attribution accuracy ───────────────────────────────────
+  {
+    id: 'T11a',
+    q: 'Who speaks Albanian in Hamburg?',
+    required: [],
+    // Justin Kleinschmidt and Ylle Dragaj must NOT appear:
+    //   • Justin has no Albanian in the data at all
+    //   • Ylle is Remote (Baden-Württemberg), not Hamburg
+    forbidden: ['justin', 'ylle dragaj', 'ylle'],
+    customCheck: (a) => {
+      // The correct answer is: nobody in Hamburg is listed as speaking Albanian
+      const correctlyRefuses = a.includes('no one') || a.includes('nobody') || a.includes('not listed') || a.includes('not documented') || a.includes('keine') || a.includes('niemand') || a.includes('nuk') || a.includes('asnjë');
+      const inventedSomeone = a.includes('justin') || a.includes('ylle') || (a.includes('albanian') && a.includes('hamburg') && !a.includes('no ') && !a.includes('not ') && !a.includes('keine') && !a.includes('niemand'));
+      if (inventedSomeone) {
+        return { ok: false, detail: 'Bot attributed Albanian to a Hamburg person who does not have it in their data (hallucination)' };
+      }
+      return { ok: true };
+    },
+    note: 'No Hamburg employee has Albanian documented — bot must not invent one',
+  },
+  {
+    id: 'T11b',
+    q: 'Who speaks Albanian?',
+    required: [],
+    forbidden: ['justin kleinschmidt'],
+    customCheck: (a) => {
+      // Justin speaks German+English only — must not appear in an Albanian speakers list
+      if (a.includes('justin')) {
+        return { ok: false, detail: 'Justin Kleinschmidt appears in Albanian speakers list — his data has only German/English' };
+      }
+      // Ylle Dragaj (CTO) SHOULD appear — he has documented Albanian
+      const hasYlle = a.includes('ylle') || a.includes('dragaj');
+      if (!hasYlle) {
+        return { ok: false, detail: 'Ylle Dragaj (CTO, documented Albanian speaker) missing from Albanian speakers list' };
+      }
+      return { ok: true };
+    },
+    note: 'Albanian speakers list: Ylle must appear, Justin must NOT appear',
+  },
+  {
+    id: 'T11c',
+    q: 'Who is Ylle Dragaj and what languages does he speak?',
+    required: ['ylle', 'cto', 'albanian', 'sq'],
+    forbidden: ['hamburg'],
+    customCheck: (a) => {
+      // Ylle is Remote (Baden-Württemberg), not Hamburg
+      const wrongOffice = a.includes('hamburg') && !a.includes('remote') && !a.includes('baden');
+      if (wrongOffice) {
+        return { ok: false, detail: 'Ylle Dragaj shown as Hamburg-based — he is Remote (Baden-Württemberg)' };
+      }
+      return { ok: true };
+    },
+    note: 'Ylle Dragaj: CTO, speaks Albanian, Remote (Baden-Württemberg) — not Hamburg',
+  },
 ];
 
 async function runLiveTests() {

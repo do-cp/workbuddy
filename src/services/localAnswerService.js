@@ -17,11 +17,20 @@ function bold(str) {
   return `**${str}**`;
 }
 
+/** Extract documented language names from both old string[] and new { lang, src }[] formats.
+ *  Filters out null-source entries (inferred/undocumented languages). */
+function langNames(p) {
+  return (p.languages || [])
+    .filter(l => typeof l === 'string' || l.src !== null)
+    .map(l => typeof l === 'string' ? l : l.lang);
+}
+
 function personCard(p) {
   const email = p.email ? ` | ${p.email}` : '';
+  const langs = langNames(p);
   return (
     `${bold(p.name)} — ${p.role}, ${p.office}${email}\n` +
-    `Languages: ${p.languages.join(', ')}`
+    `Languages: ${langs.length ? langs.join(', ') : '(not documented)'}`
   );
 }
 
@@ -53,8 +62,9 @@ function tryPeople(query, lang) {
     const target = langMatch[1].toLowerCase();
     const map = { albanian: 'Albanian', shqip: 'Albanian', german: 'German', deutsch: 'German', english: 'English', englisch: 'English' };
     const targetLang = map[target];
+    // Only match sourced (documented) languages — null-src entries are filtered out
     const matched = people.filter((p) =>
-      p.languages.some((l) => l.toLowerCase() === targetLang.toLowerCase())
+      langNames(p).some((name) => name.toLowerCase() === targetLang.toLowerCase())
     );
     if (!matched.length) return null;
     const names = matched.map((p) => `${bold(p.name)} (${p.office})`).join(', ');

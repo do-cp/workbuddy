@@ -25,8 +25,29 @@ import { people, wisotechPeople } from './knowledgeBase.js';
 
 // ── Language code helper ──────────────────────────────────────────────────────
 const LANG_CODE = { German: 'de', English: 'en', Albanian: 'sq', French: 'fr', Serbian: 'sr', Turkish: 'tr' };
+
+/**
+ * Accepts both legacy string[] AND new { lang, src }[] format.
+ * Languages with src === null are FILTERED OUT — they were inferred from
+ * location/name and are not explicitly documented. Never show them in AI answers.
+ */
 function langStr(langs) {
-  return (langs || []).map(l => LANG_CODE[l] || l.slice(0, 2).toLowerCase()).join(', ');
+  if (!langs || !langs.length) return '';
+  return langs
+    .filter(l => typeof l === 'string' || l.src !== null) // drop null-source entries
+    .map(l => {
+      const name = typeof l === 'string' ? l : l.lang;
+      return LANG_CODE[name] || name.slice(0, 2).toLowerCase();
+    })
+    .join(', ');
+}
+
+/** Returns the raw language name strings (sourced only — null-src filtered). */
+function langNames(langs) {
+  if (!langs || !langs.length) return [];
+  return langs
+    .filter(l => typeof l === 'string' || l.src !== null)
+    .map(l => typeof l === 'string' ? l : l.lang);
 }
 function personLine(p) {
   const email = p.email || '(not in source documents)';
@@ -275,7 +296,7 @@ DISAMBIGUATION RULES:
 - "Who is in [city]?" ALWAYS means people working there — list names and roles. NEVER answer with holidays or other info.
 - Only answer about holidays when the user explicitly says "holiday", "Feiertag", "pushime", "vacation days", "free days", "school holidays", "Schulferien".
 - FACHBEREICH vs DEV TEAM (CRITICAL): "Fachbereich [X]", "FB [X]", or "wer ist zuständig für [X] Fachbereich" ALWAYS refers to the BUSINESS ANALYST contact. NEVER return developers for a Fachbereich question. Example: "Fachbereich Sach" → Justin Kleinschmidt + Marvin Jordan (BAs). NOT Sebastian Thiede or other developers. The dev team section is SEPARATE and only for "who codes X" questions.
-- LANGUAGES: NEVER infer language abilities. ONLY list languages explicitly in the data below. Do not guess based on name or location.
+- LANGUAGES (CRITICAL): NEVER attribute a language to a person unless the PEOPLE section below explicitly lists it for them. If someone asks "who speaks Albanian in Hamburg?" and NO Hamburg person has Albanian listed in their data entry, say: "No one in Hamburg is listed as speaking Albanian in our records 📄" — do NOT invent speakers. Do not infer from office location, nationality, or name. The people section below only includes verified, sourced language data.
 - ABBREVIATIONS: ONLY explain abbreviations that exist in the knowledge base below. If an abbreviation is NOT in the data, say: "I couldn't find '[X]' in the available documents 📄" — do not use general knowledge.
 - SOURCE RULE: Never invent facts not in the knowledge base below. If something is missing, say so and suggest who to ask.
 
