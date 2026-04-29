@@ -72,6 +72,8 @@ const s = {
   },
 };
 
+const MAX_LENGTH = 2000;
+
 export default function Composer({ onSend, disabled, showBack, onBack }) {
   const [value, setValue] = useState('');
   const [focused, setFocused] = useState(false);
@@ -127,7 +129,7 @@ export default function Composer({ onSend, disabled, showBack, onBack }) {
               placeholder="Ask WorkBuddy anything… e.g. 'Who works on cpit.SIGN?'"
               rows={1}
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => setValue(e.target.value.slice(0, MAX_LENGTH))}
               onKeyDown={onKeyDown}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
@@ -144,6 +146,11 @@ export default function Composer({ onSend, disabled, showBack, onBack }) {
             </button>
           </div>
         </div>
+        {value.length > 1600 && (
+          <div style={{ fontSize: 11, textAlign: 'right', color: value.length >= MAX_LENGTH ? '#E25555' : 'var(--color-muted)', marginBottom: 4 }}>
+            {value.length}/{MAX_LENGTH}
+          </div>
+        )}
         <div style={s.disclaimer}>
           <span style={{ color: 'var(--color-dark-blue)', fontWeight: 600 }}>WorkBuddy</span> uses
           AI. Always verify important details with HR. · Made with{' '}

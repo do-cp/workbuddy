@@ -4,8 +4,31 @@ import cors from 'cors';
 import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-runtime';
 
 const app = express();
-app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:4173', 'http://127.0.0.1:5173'] }));
-app.use(express.json({ limit: '2mb' }));
+app.use(cors({ origin: (process.env.ALLOWED_ORIGINS || 'http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173').split(',') }));
+app.use(express.json({ limit: '256kb' }));
+
+// ─── Rate limiting ────────────────────────────────────────────────────────────
+const rateLimitMap = new Map();
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, times] of rateLimitMap.entries()) {
+    const fresh = times.filter(t => now - t < 60_000);
+    if (fresh.length === 0) rateLimitMap.delete(ip);
+    else rateLimitMap.set(ip, fresh);
+  }
+}, 60_000);
+
+function rateLimit(req, res, next) {
+  const ip = req.ip || req.socket?.remoteAddress || 'unknown';
+  const now = Date.now();
+  const times = (rateLimitMap.get(ip) || []).filter(t => now - t < 60_000);
+  times.push(now);
+  rateLimitMap.set(ip, times);
+  if (times.length > 20) {
+    return res.status(429).json({ error: 'Too many requests — please slow down.' });
+  }
+  next();
+}
 
 const REGION = process.env.AWS_REGION || 'eu-north-1';
 const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'eu.amazon.nova-pro-v1:0';
@@ -117,7 +140,7 @@ SALES & MARKETING TEAM (Team Kunden / Marketing):
 - Markus Stüwer-Sklarek | Support 1st Level / Datenanalyst | Remote NRW | deutsch | mss@comparit.de
 
 MANAGEMENT & SUPPORT:
-- Patrick von der Hagen | IT Spezialist | Remote Baden-Württemberg | deutsch, englisch
+- Patrick von der Hagen | IT Spezialist | Remote Baden-Württemberg | deutsch, englisch | pvdh@comparit.de
 - Christine Simon | Office Assistenz | Hamburg | deutsch | csi@comparit.de
 - Sandra Thomm | Buchhaltung | Remote NRW | deutsch | sth@comparit.de
 - Philipp Karkowski | Werkstudent | Hamburg | deutsch | pk@comparit.de
@@ -161,7 +184,7 @@ CONTACTS: IT → Patrick von der Hagen or IT channel on Teams | HR → lp@compar
 
 // ─── Chat endpoint ────────────────────────────────────────────────────────────
 
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', rateLimit, async (req, res) => {
   const { messages } = req.body;
 
   if (!Array.isArray(messages) || messages.length === 0) {

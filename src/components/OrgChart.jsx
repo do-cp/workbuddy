@@ -1,6 +1,18 @@
 import { useState } from 'react';
 import { people } from '../data/knowledgeBase.js';
 
+// ── i18n ──────────────────────────────────────────────────────────────────────
+function getLang() {
+  const l = navigator.language?.toLowerCase() || '';
+  if (l.startsWith('sq')) return 'sq';
+  if (l.startsWith('de')) return 'de';
+  return 'en';
+}
+const TITLES = { en: 'comparit Org Chart', de: 'comparit Organigramm', sq: 'Organigrami i comparit' };
+const SUBTITLES = { en: 'people · Click any card to see contact details', de: 'Personen · Auf eine Karte klicken für Details', sq: 'persona · Kliko çdo kartë për detaje' };
+const SEARCH_PH = { en: 'Search by name, role, team or location…', de: 'Suche nach Name, Rolle, Team oder Standort…', sq: 'Kërko sipas emrit, rolit, ekipit ose vendndodhjes…' };
+const COPIED_LABEL = { en: 'Copied!', de: 'Kopiert!', sq: 'Kopjuar!' };
+
 // ── Colour palette per team ───────────────────────────────────────────────────
 const TEAM_META = {
   Management:         { label: 'Management',         color: '#1B1C50', bg: '#E8F0FF', border: '#C5D4F8' },
@@ -27,6 +39,17 @@ function locationLabel(office) {
 // ── Person card ───────────────────────────────────────────────────────────────
 function PersonCard({ person, isLeader = false, compact = false }) {
   const [expanded, setExpanded] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const lang = getLang();
+
+  function copyEmail(e) {
+    e.stopPropagation();
+    if (!person.email) return;
+    navigator.clipboard.writeText(person.email).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    });
+  }
   const teamMeta = TEAM_META[person.team] || TEAM_META.Management;
 
   const card = {
@@ -113,8 +136,21 @@ function PersonCard({ person, isLeader = false, compact = false }) {
           gap: 6,
         }}>
           {person.email && (
-            <div style={{ fontSize: 12, color: 'var(--color-muted)' }}>
+            <div style={{ fontSize: 12, color: 'var(--color-muted)', display: 'flex', alignItems: 'center', gap: 6 }}>
               ✉️ <span style={{ color: 'var(--color-dark-blue)', fontWeight: 500 }}>{person.email}</span>
+              <button
+                onClick={copyEmail}
+                title="Copy email"
+                style={{
+                  background: copied ? '#D1FAE5' : 'var(--color-light-gray)',
+                  border: 'none', borderRadius: 4, padding: '2px 6px',
+                  fontSize: 10, cursor: 'pointer', fontWeight: 600,
+                  color: copied ? '#065F46' : 'var(--color-muted)',
+                  flexShrink: 0,
+                }}
+              >
+                {copied ? COPIED_LABEL[lang] : '⎘ Copy'}
+              </button>
             </div>
           )}
           {person.languages?.length > 0 && (
@@ -191,7 +227,7 @@ function TeamSection({ teamName, members }) {
       {!collapsed && (
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
           gap: 8,
         }}>
           {members.map((p) => (
@@ -206,6 +242,7 @@ function TeamSection({ teamName, members }) {
 // ── Main OrgChart component ───────────────────────────────────────────────────
 export default function OrgChart({ onClose }) {
   const [search, setSearch] = useState('');
+  const lang = getLang();
 
   const leaders = people.filter(p => LEADERSHIP_ROLES.includes(p.role));
   const nonLeaders = people.filter(p => !LEADERSHIP_ROLES.includes(p.role));
@@ -263,10 +300,10 @@ export default function OrgChart({ onClose }) {
                 fontWeight: 700, fontSize: 17,
                 color: 'var(--color-dark-blue)',
               }}>
-                comparit Organigramm
+                {TITLES[lang]}
               </div>
               <div style={{ fontSize: 12, color: 'var(--color-muted)', marginTop: 2 }}>
-                {people.length} people · Click any card to see contact details
+                {people.length} {SUBTITLES[lang]}
               </div>
             </div>
           </div>
@@ -291,7 +328,7 @@ export default function OrgChart({ onClose }) {
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Search by name, role, team, or location…"
+            placeholder={SEARCH_PH[lang]}
             style={{
               width: '100%',
               padding: '10px 14px',

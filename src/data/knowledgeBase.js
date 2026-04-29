@@ -41,7 +41,7 @@ export const people = [
   { name: 'Venera Plakolli', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'vp@comparit.de' },
   { name: 'Xheneta Hasani', role: 'Junior Developer', team: 'Development', office: 'Remote (Hessen)', languages: ['Albanian', 'English', 'German'], email: 'xh@comparit.de' },
   { name: 'Ora Osmani', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'oo@comparit.de' },
-  { name: 'Adit Jusufi', role: 'Junior Developer', team: 'Development', office: 'Prishtina', languages: ['Albanian', 'English'], email: 'aj2@comparit.de' },
+
   { name: 'Dörte Meins', role: 'Product Owner', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'dm@comparit.de' },
   { name: 'Corinna Sevin', role: 'Expert Business Analyst', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'cs@comparit.de' },
   { name: 'Tanja Nitsch', role: 'Senior Business Analystin', team: 'Business Analysis', office: 'Hamburg', languages: ['German', 'English'], email: 'tn@comparit.de' },

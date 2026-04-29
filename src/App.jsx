@@ -21,6 +21,22 @@ const mainStyle = {
   minHeight: 0,
 };
 
+const STORAGE_KEY = 'workbuddy_messages';
+const MAX_STORED = 60;
+
+function loadMessages() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+function saveMessages(msgs) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs.slice(-MAX_STORED)));
+  } catch {}
+}
+
 async function getAnswer(query, messages) {
   if (isAiEnabled()) {
     try {
@@ -28,12 +44,10 @@ async function getAnswer(query, messages) {
     } catch (err) {
       if (err.message === 'AWS_EXPIRED') {
         return {
-          answer:
-            '⚠️ AWS credentials have expired. Go to the [access portal](https://d-996741f28a.awsapps.com/start/#/) → **DeveloperAccess** → **Access keys** → copy the new values into `server/.env`, then restart the server.',
+          answer: '⚠️ AWS credentials have expired. Ask **Patrick von der Hagen** (IT) to refresh them, then restart the server.',
           followUps: [],
         };
       }
-      // Any other AI error → fall through to local knowledge base
       console.warn('AI unavailable, using local answers:', err.message);
     }
   }
@@ -41,7 +55,7 @@ async function getAnswer(query, messages) {
 }
 
 export default function App() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(loadMessages);
   const [isTyping, setIsTyping] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showOrgChart, setShowOrgChart] = useState(false);
@@ -62,17 +76,19 @@ export default function App() {
     try {
       const { answer, followUps } = await getAnswer(text, messages);
       const assistantMsg = { role: 'assistant', content: answer, followUps };
-      setMessages([...next, assistantMsg]);
+      const updated = [...next, assistantMsg];
+      setMessages(updated);
+      saveMessages(updated);
     } catch {
-      setMessages((cur) => [
-        ...cur,
-        {
+      setMessages((cur) => {
+        const updated = [...cur, {
           role: 'assistant',
           error: true,
-          content:
-            "I couldn't reach the assistant just now. Check your connection and try again — or ping **#it-support** on Slack if it keeps happening.",
-        },
-      ]);
+          content: "I couldn't reach the assistant just now. Check your connection and try again — or message the IT channel on **Teams** if it keeps happening.",
+        }];
+        saveMessages(updated);
+        return updated;
+      });
     } finally {
       setIsTyping(false);
     }
@@ -80,6 +96,7 @@ export default function App() {
 
   const startNewChat = () => {
     setMessages([]);
+    localStorage.removeItem(STORAGE_KEY);
     setShowWelcome(false);
   };
 

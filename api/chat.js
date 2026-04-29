@@ -108,7 +108,7 @@ SALES & MARKETING TEAM (Team Kunden / Marketing):
 - Markus Stüwer-Sklarek | Support 1st Level / Datenanalyst | Remote NRW | deutsch | mss@comparit.de
 
 MANAGEMENT & SUPPORT:
-- Patrick von der Hagen | IT Spezialist | Remote Baden-Württemberg | deutsch, englisch
+- Patrick von der Hagen | IT Spezialist | Remote Baden-Württemberg | deutsch, englisch | pvdh@comparit.de
 - Christine Simon | Office Assistenz | Hamburg | deutsch | csi@comparit.de
 - Sandra Thomm | Buchhaltung | Remote NRW | deutsch | sth@comparit.de
 - Philipp Karkowski | Werkstudent | Hamburg | deutsch | pk@comparit.de
@@ -150,10 +150,13 @@ ABBREVIATIONS: BU=Disability Insurance, LV=Life Insurance, KV=Health Insurance, 
 CONTACTS: IT → Patrick von der Hagen or IT channel on Teams | HR → lp@comparit.de (Laimi) or hr@comparit.de | QA → Drilon Osmanaj | Product → Ellen Ludwig (CPO) or Dörte Meins (PO) | Accounting → Sandra Thomm or Shkronja Babatinca`;
 
 export default async function handler(req, res) {
-  // CORS headers — allow the deployed frontend domain
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS — restrict to known origins only
+  const ALLOWED = (process.env.ALLOWED_ORIGINS || 'https://workbuddy-nu.vercel.app,http://localhost:5173,http://localhost:4173').split(',');
+  const origin = req.headers.origin;
+  if (ALLOWED.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Vary', 'Origin');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });

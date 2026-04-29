@@ -85,12 +85,14 @@ const s = {
   },
 };
 
-// Inline markdown: **bold**, *italic*
-function renderInline(text, key) {
-  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+// Inline markdown: **bold**, *italic*, [text](url)
+function renderInline(text) {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g);
   return parts.map((p, i) => {
     if (p.startsWith('**') && p.endsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>;
     if (p.startsWith('*') && p.endsWith('*')) return <em key={i}>{p.slice(1, -1)}</em>;
+    const link = p.match(/^\[(.+)\]\((.+)\)$/);
+    if (link) return <a key={i} href={link[2]} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>{link[1]}</a>;
     return <span key={i}>{p}</span>;
   });
 }
