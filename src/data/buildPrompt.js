@@ -16,8 +16,88 @@
 
 import { fachbereiche } from './sources/fachbereiche.js';
 import { devTeamsData } from './sources/devTeams.js';
+import { workflowsData } from './sources/workflows.js';
+import { itSupportData } from './sources/itSupport.js';
 
 // ── Dynamic section builders ──────────────────────────────────────────────────
+
+function buildITSupportSection() {
+  const c = itSupportData.primaryContact;
+  const lines = [
+    `── IT SUPPORT ────────────────────────────────────────────────────────────────`,
+    `Source: ${itSupportData._meta.source}`,
+    ``,
+    `PRIMARY IT SUPPORT (external): Dennis Krimilowski (IT-TEC)`,
+    `  Email: ${c.email} | Phone: ${c.phone}`,
+    `  Hamburg presence: ${c.hamburgVisit}`,
+    `  Backup: ${c.note}`,
+    ``,
+    `INTERNAL IT SPECIALIST: Patrick von der Hagen (pvdh@comparit.de)`,
+    `  Use for: SharePoint access/permissions, IT admin, internal systems.`,
+    ``,
+    `SELF-HELP BEFORE CONTACTING DENNIS:`,
+  ];
+  itSupportData.selfHelp.forEach((tip, i) => lines.push(`  ${i + 1}. ${tip}`));
+  lines.push(``);
+  lines.push(`URGENCY LEVELS:`);
+  for (const u of itSupportData.urgencyLevels) {
+    lines.push(`  ${u.level}: ${u.description} → ${u.action}`);
+  }
+  lines.push(``);
+  lines.push(`REPORT IT ISSUE STEP-BY-STEP:`);
+  lines.push(`  1. Try self-help steps above.`);
+  lines.push(`  2. Non-urgent: email ${c.email} with a clear subject.`);
+  lines.push(`  3. Urgent: call ${c.phone}.`);
+  lines.push(`  4. For SharePoint access: Patrick von der Hagen (pvdh@comparit.de) or IT Teams channel.`);
+  lines.push(`  ALWAYS include: (1) problem description, (2) device/software, (3) since when, (4) screenshot if available.`);
+  return lines.join('\n');
+}
+
+function buildWorkflowsSection() {
+  const lines = [
+    `── WORKFLOWS (Step-by-step process guides) ──────────────────────────────────`,
+  ];
+
+  for (const wf of workflowsData.workflows) {
+    lines.push(``);
+    lines.push(`${wf.title.toUpperCase()}${wf.titleEN ? ` (${wf.titleEN})` : ''}`);
+    lines.push(`Source: ${wf.source}${wf.owner ? ` | Owner: ${wf.owner}` : ''}${wf.system ? ` | System: ${wf.system}` : ''}`);
+
+    if (wf.description) lines.push(`Purpose: ${wf.description}`);
+
+    if (wf.prerequisites && wf.prerequisites.length) {
+      lines.push(`Prerequisites:`);
+      wf.prerequisites.forEach(p => lines.push(`  • ${p}`));
+    }
+
+    if (wf.steps && wf.steps.length) {
+      // Handle nested step structure (TI workflow) vs flat steps
+      if (wf.steps[0].useCase) {
+        for (const uc of wf.steps) {
+          lines.push(`  [${uc.useCase}]`);
+          for (const s of uc.subSteps) {
+            lines.push(`    ${s.step}. ${s.action}`);
+            if (s.note) lines.push(`       ⚠ ${s.note}`);
+          }
+        }
+      } else {
+        for (const s of wf.steps) {
+          lines.push(`  ${s.step}. ${s.action}`);
+          if (s.note) lines.push(`     ⚠ ${s.note}`);
+        }
+      }
+    }
+
+    if (wf.checklist && wf.checklist.length) {
+      lines.push(`Quick checklist:`);
+      wf.checklist.forEach((item, i) => lines.push(`  ${i + 1}. ✓ ${item}`));
+    }
+
+    if (wf.rules) lines.push(`Rules: ${wf.rules}`);
+  }
+
+  return lines.join('\n');
+}
 
 function buildFachbereicheSection() {
   const m = fachbereiche._meta;
@@ -169,6 +249,14 @@ Source: Standort-Informationen_erweitert.xlsx
 - Anita Hasani          | Frontend Developer               | Prishtina        | sq, en     | (not in source documents)
 - Arber Mirena          | Senior Developer                 | Prishtina        | sq, en     | (not in source documents)
 - Behxhet Rexha         | Intern                           | Prishtina        | sq, en     | (not in source documents)
+- Fabio Schmied         | Senior Developer                 | Hamburg          | de, en     | (not in source documents)
+- Donika Krasniqi Gjoka | Mid Senior Developer             | Prishtina        | sq, en     | (not in source documents)
+- Ardian Hashu          | Senior Developer                 | Prishtina        | sq, en     | (not in source documents)
+- Nils Dent             | Junior Developer                 | Hamburg          | de, en     | (not in source documents)
+- Erza Gashi            | Intern                           | Prishtina        | sq, en     | (not in source documents)
+- Kamel Almaj           | Developer                        | Prishtina        | sq, en     | (not in source documents)
+- Miroslava Placecki    | Developer                        | Prishtina        | sq, en     | (not in source documents)
+Source (new people above): organigram cpit.pdf (Stand: 01.03.2026) — emails not available in org chart
 
 ── INTEGRATIONS TEAM (Team Anbindungen) ─────────────────────────────────────
 - Besnik Ejupi          | Expert Software Developer | Prishtina  | de, en, sq | be@comparit.de
@@ -184,13 +272,17 @@ Source: Standort-Informationen_erweitert.xlsx
 - Marvin Jordan         | Senior Business Analyst SUHK | Hamburg        | de, en | mj@comparit.de
 - Michael Portius       | Senior Business Analyst   | Remote Thüringen  | de, en | mpo@comparit.de
 - Eva Arfaoui-Holthey   | Business Analystin SUHK   | Hamburg           | de, en | eho@comparit.de
-- Chantal Voß           | Business Analystin        | Hamburg           | de, en | cv@comparit.de
+- Chantal Voß           | Business Analystin KO/LV  | Hamburg           | de, en | cv@comparit.de
+- Bibiana Massimo       | Business Analyst          | Hamburg           | de, en | (not in source documents)
 - Justin Kleinschmidt   | Business Analyst Products | Hamburg           | de, en | jk@comparit.de
 - Lukas Hodel           | Business Analyst          | Hamburg           | de, en | lho@comparit.de
 
-── SALES & MARKETING ────────────────────────────────────────────────────────
+── SALES & MARKETING / DESIGN ───────────────────────────────────────────────
+Source: organigram cpit.pdf (Stand: 01.03.2026)
 - Ribana Harkensee        | Referentin Products              | Hamburg    | de | rh@comparit.de
 - Markus Stüwer-Sklarek   | Support 1st Level / Datenanalyst | Remote NRW | de | mss@comparit.de
+- Niya Martines           | Design UI/LV                     | Hamburg    | de | (not in source documents)
+- Katarzyna Hausbrandt    | Design UI LV                     | Hamburg    | de | (not in source documents)
 
 ── MANAGEMENT & SUPPORT ─────────────────────────────────────────────────────
 - Patrick von der Hagen | IT Spezialist             | Remote BW  | de, en | pvdh@comparit.de
@@ -202,9 +294,10 @@ Source: Standort-Informationen_erweitert.xlsx
 ── TOOLS ─────────────────────────────────────────────────────────────────────
 - Jira (comparit.atlassian.net) — Ticketing & sprint tracking
 - Confluence (comparit.atlassian.net/wiki) — Documentation & wiki
-- Personio — HR system: leave requests, sick notifications, time off. Contact: Laimi (lp@comparit.de)
-- Tempo — Time tracking integrated with Jira. Log all working hours here.
-- SharePoint (https://comparitgmbh448.sharepoint.com/sites/Comparit) — Central document storage, active Jan 2026. Libraries: Firma, C-Team, GF, Personal, Buchhaltung, Verwaltung. Permissions: Dennis (IT-TEC) via IT channel.
+- Personio — HR system: leave requests, sick notifications, time off, overtime compensation. Contact: Laimi (lp@comparit.de)
+- Tempo — Time tracking integrated with Jira. Log ALL regular working hours here. Contact: Laimi for questions.
+- SharePoint (https://comparitgmbh448.sharepoint.com/sites/Comparit) — Central document storage, active Jan 2026. Libraries: Firma, C-Team, GF, Personal, Buchhaltung, Verwaltung. Access: Patrick von der Hagen (pvdh@comparit.de) or IT Teams channel.
+- TI Live (Tarif-Interface / Tarif-Ingress) — Internal tariff and application question management. For workflow questions: Tanja Nitsch (tn@comparit.de).
 - Microsoft Teams — Internal communication: chat, calls, channels
 - Cypress — E2E testing | Git/GitHub — Version control | Figma — Design | VS Code — Dev | Postman — API testing
 
@@ -257,10 +350,18 @@ Source: Arbeitsrichtlinie_Dienstreisen_comparit.docx
 - Travel booking: Laimi (lp@comparit.de) books flights/trains/hotels.
 - Travel policy questions: Axel Karkowski (ak@comparit.de).
 
+EMERGENCY ON-CALL (Notfallbereitschaft):
+Source: Arbeitsrichtlinie_Arbeitszeit_comparit.docx
+- Exists to meet 24/7 SLA commitments to customers.
+- Does NOT mean employees regularly work on Fridays. Fridays remain free.
+- Arrangement agreed per team between team lead and employees.
+- Emergency on-call is compensated appropriately. Questions → Axel Karkowski (ak@comparit.de).
+
 TIME TRACKING:
-- Regular hours → log in Tempo.
-- Absences, vacation, overtime compensation → managed in Personio.
-- Overtime: must be pre-approved. Compensated as Freizeitausgleich. Log in Tempo.
+Source: Arbeitsrichtlinie_Arbeitszeit_comparit.docx
+- Regular working hours → log in Tempo (via Jira). Contact: Laimi for questions.
+- Absences, vacation, overtime compensation (Freizeitausgleich) → managed in Personio.
+- Overtime: must be pre-approved by team lead. Log in Tempo. Comp time applied via Personio.
 
 ── HOLIDAYS ─────────────────────────────────────────────────────────────────
 PUBLIC HOLIDAYS Hamburg, Germany: New Year (Jan 1), Good Friday, Easter Monday, Labour Day (May 1), Ascension Day, Whit Monday, German Unity Day (Oct 3), Reformation Day (Oct 31), Christmas (Dec 25–26).
@@ -287,51 +388,17 @@ Technical: TI=TarifIngress | IC=Insurance Connector | DEV=Developer | BE=Backend
 Process: AC=Acceptance Criteria | QA=Quality Assurance | cpit=compare it | SUHK=Selbstständige/Unternehmer/Heilberufe/Kammerberufe | GF=Geschäftsführung | B2C=Business to Consumer | SLA=Service Level Agreement | CI/CD=Continuous Integration/Deployment
 
 ── CONTACTS ─────────────────────────────────────────────────────────────────
-IT → Patrick von der Hagen (pvdh@comparit.de) | IT Teams channel
+IT Support (hardware/software) → Dennis Krimilowski (IT-TEC): support@it-tec.de | +49 4533 791010
+IT Internal (SharePoint/admin) → Patrick von der Hagen (pvdh@comparit.de) | IT Teams channel
 HR / Personio / Leave → Laimi Pester (lp@comparit.de) | hr@comparit.de
 QA → Drilon Osmanaj (do@comparit.de)
 Product → Ellen Ludwig CPO (el@comparit.de) | Dörte Meins PO (dm@comparit.de)
 Accounting → Sandra Thomm (sth@comparit.de) | Shkronja Babatinca Kosovo (sb@comparit.de)
 Work time / overtime → Axel Karkowski (ak@comparit.de)
 Business travel / booking → Laimi Pester (lp@comparit.de)
-SharePoint access → Dennis (IT-TEC) via IT Teams channel
+TI Live workflow questions → Tanja Nitsch (tn@comparit.de)
+LV Fondslisten workflow → LV Fachbereich (see LV Fachbereich assignments)
 
-── WORKFLOWS (Step-by-step guides) ──────────────────────────────────────────
-Source: Arbeitsrichtlinie_Abwesenheiten_comparit_V1.docx + Arbeitsrichtlinie_Dienstreisen_comparit.docx + SharePoint guide
+${buildITSupportSection()}
 
-HOW TO REQUEST LEAVE:
-1. Open Personio → "Abwesenheiten" → "Abwesenheit beantragen"
-2. Select type: Urlaub. Choose dates. Enter substitute (Vertretung) — mandatory.
-3. Submit. Team lead notified and approves/declines.
-4. Once approved: mark dates "Abwesend" in Outlook calendar.
-Rule: submit ≥2 weeks in advance. Help: Laimi (lp@comparit.de).
-
-HOW TO LOG WORKING HOURS (TEMPO):
-1. Open Jira → click "Tempo" in left sidebar.
-2. Select relevant Jira ticket or project.
-3. Enter date, hours, description.
-4. Save. Appears in your Tempo timesheet.
-Rule: log daily or weekly. Overtime requires prior team lead approval.
-
-HOW TO REPORT SICK:
-1. Report in Personio OR message team lead — before 09:00 AM day 1.
-2. Continue reporting each working day if absence extends.
-3. From day 4: send sick note (Attest/AU) to hr@comparit.de + inform Laimi.
-Child illness Germany: report in Personio — up to 15 days/child/year (§45 SGB V).
-
-HOW TO SUBMIT EXPENSES:
-1. Under €25: send receipt to Sandra Thomm (sth@comparit.de).
-2. Over €25: written team lead approval first.
-3. Download "Vorlage_Reisekostenabrechnung cpit.xlsx" from SharePoint.
-4. Fill in form, attach receipts, send to Sandra Thomm.
-
-HOW TO BOOK BUSINESS TRAVEL:
-1. Contact Laimi (lp@comparit.de) — books flights, trains, hotels.
-2. Suggest preferred route and times in advance.
-3. Register trip in Personio as business trip.
-4. After return: fill expense form (SharePoint), attach receipts, send to Sandra Thomm.
-
-HOW TO REPORT AN IT ISSUE:
-1. Message Patrick von der Hagen (pvdh@comparit.de) or write in IT Teams channel.
-2. Describe: device, software, error message.
-3. SharePoint access/permissions → Dennis (IT-TEC) via IT Teams channel.`;
+${buildWorkflowsSection()}`;

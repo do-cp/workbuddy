@@ -50,6 +50,14 @@ export const people = [
   { name: 'Anita Hasani',        role: 'Frontend Developer',               team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
   { name: 'Arber Mirena',        role: 'Senior Developer',                 team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
   { name: 'Behxhet Rexha',       role: 'Intern',                           team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  // New people from organigram cpit.pdf (Stand: 01.03.2026) — emails not in org chart
+  { name: 'Fabio Schmied',       role: 'Senior Developer',                 team: 'Development',        office: 'Hamburg',                    languages: ['German', 'English'],             email: '' },
+  { name: 'Donika Krasniqi Gjoka', role: 'Mid Senior Developer',           team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  { name: 'Ardian Hashu',        role: 'Senior Developer',                 team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  { name: 'Nils Dent',           role: 'Junior Developer',                 team: 'Development',        office: 'Hamburg',                    languages: ['German', 'English'],             email: '' },
+  { name: 'Erza Gashi',          role: 'Intern',                           team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  { name: 'Kamel Almaj',         role: 'Developer',                        team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
+  { name: 'Miroslava Placecki',  role: 'Developer',                        team: 'Development',        office: 'Prishtina',                  languages: ['Albanian', 'English'],           email: '' },
 
   // ── Integrations team ──────────────────────────────────────────────────────
   { name: 'Besnik Ejupi',        role: 'Expert Software Developer',        team: 'Integrations',       office: 'Prishtina',                  languages: ['German', 'English', 'Albanian'], email: 'be@comparit.de' },
@@ -64,13 +72,17 @@ export const people = [
   { name: 'Marvin Jordan',       role: 'Senior Business Analyst SUHK',     team: 'Business Analysis',  office: 'Hamburg',                    languages: ['German', 'English'],             email: 'mj@comparit.de' },
   { name: 'Michael Portius',     role: 'Senior Business Analyst',          team: 'Business Analysis',  office: 'Remote (Thüringen)',         languages: ['German', 'English'],             email: 'mpo@comparit.de' },
   { name: 'Eva Arfaoui-Holthey', role: 'Business Analystin SUHK',          team: 'Business Analysis',  office: 'Hamburg',                    languages: ['German', 'English'],             email: 'eho@comparit.de' },
-  { name: 'Chantal Voß',         role: 'Business Analystin',               team: 'Business Analysis',  office: 'Hamburg',                    languages: ['German', 'English'],             email: 'cv@comparit.de' },
+  { name: 'Chantal Voß',         role: 'Business Analystin KO/LV',         team: 'Business Analysis',  office: 'Hamburg',                    languages: ['German', 'English'],             email: 'cv@comparit.de' },
+  { name: 'Bibiana Massimo',     role: 'Business Analyst',                 team: 'Business Analysis',  office: 'Hamburg',                    languages: ['German', 'English'],             email: '' },
   { name: 'Justin Kleinschmidt', role: 'Business Analyst Products',        team: 'Business Analysis',  office: 'Hamburg',                    languages: ['German', 'English'],             email: 'jk@comparit.de' },
   { name: 'Lukas Hodel',         role: 'Business Analyst',                 team: 'Business Analysis',  office: 'Hamburg',                    languages: ['German', 'English'],             email: 'lho@comparit.de' },
 
-  // ── Sales & Marketing ──────────────────────────────────────────────────────
+  // ── Sales & Marketing / Design ─────────────────────────────────────────────
   { name: 'Ribana Harkensee',       role: 'Referentin Products',                   team: 'Sales & Marketing', office: 'Hamburg',              languages: ['German'],                        email: 'rh@comparit.de' },
   { name: 'Markus Stüwer-Sklarek',  role: 'Support 1st Level / Datenanalyst',     team: 'Sales & Marketing', office: 'Remote (NRW)',         languages: ['German'],                        email: 'mss@comparit.de' },
+  // Design (under CMO Oliver Fink) — source: organigram cpit.pdf Stand: 01.03.2026
+  { name: 'Niya Martines',          role: 'Design UI/LV',                          team: 'Sales & Marketing', office: 'Hamburg',              languages: ['German'],                        email: '' },
+  { name: 'Katarzyna Hausbrandt',   role: 'Design UI LV',                          team: 'Sales & Marketing', office: 'Hamburg',              languages: ['German'],                        email: '' },
 
   // ── Management & Support ───────────────────────────────────────────────────
   { name: 'Patrick von der Hagen', role: 'IT Spezialist',                  team: 'Management',         office: 'Remote (Baden-Württemberg)', languages: ['German', 'English'],             email: 'pvdh@comparit.de' },
@@ -303,7 +315,7 @@ export const abbreviations = {
 };
 
 export const contacts = {
-  IT:          '**Patrick von der Hagen** (pvdh@comparit.de) — IT Spezialist. For quick issues use the IT channel on **Teams**.',
+  IT:          '**Dennis Krimilowski** (IT-TEC) — Primary IT support for hardware/software issues. Email: support@it-tec.de | Phone: +49 4533 791010. For SharePoint/admin: **Patrick von der Hagen** (pvdh@comparit.de) or IT Teams channel.',
   HR:          '**Laimi Pester** (lp@comparit.de) for day-to-day questions, Personio, and vacation. Formal HR: **hr@comparit.de**.',
   Operations:  '**Laimi Pester** handles office management, travel booking, and executive support.',
   QA:          '**Drilon Osmanaj** (do@comparit.de) is the QA Engineer in Prishtina.',
@@ -415,9 +427,9 @@ export const categories = [
     sublabel: 'Processes & step-by-step guides',
     suggestions: [
       'How do I request leave in Personio?',
-      'How do I log time in Tempo?',
+      'How do I create a new Fondsliste in TI?',
+      'How do I add an Antragsfrage in TI Live?',
       'How do I submit expenses?',
-      'How do I report sick?',
     ],
   },
 ];

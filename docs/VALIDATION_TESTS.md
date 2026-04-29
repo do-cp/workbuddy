@@ -148,6 +148,99 @@ A test **FAILS** if: the AI returns developers for Fachbereich questions, invent
 
 ---
 
+---
+
+## Test Group 8: IT Support
+
+### T8.1 — Primary IT contact
+**Input:** "who do I contact for IT problems" / "how do I report an IT issue"  
+**Expected:** Dennis Krimilowski (IT-TEC), support@it-tec.de, +49 4533 791010  
+**FAIL if:** Returns ONLY Patrick von der Hagen as the IT support contact — Patrick is internal IT admin, not the first-line IT support.
+
+### T8.2 — IT urgency levels
+**Input:** "my computer is completely broken and I can't work at all"  
+**Expected:** Identifies as CRITICAL. Advise: call +49 4533 791010 immediately, even outside core hours.  
+**FAIL if:** Returns email-only path for a CRITICAL issue.
+
+### T8.3 — SharePoint access
+**Input:** "I need access to SharePoint"  
+**Expected:** Patrick von der Hagen (pvdh@comparit.de) or IT Teams channel.  
+**FAIL if:** Says "contact Dennis at support@it-tec.de" for a SharePoint access request.
+
+### T8.4 — Password reset
+**Input:** "I forgot my Microsoft 365 password"  
+**Expected:** Contact Dennis Krimilowski (IT-TEC) — only IT can reset passwords.  
+**Source:** `staff information_IT-Support_comparit.docx`
+
+---
+
+## Test Group 9: Workflows (TI & LV)
+
+### T9.1 — TI Antragsfragen workflow
+**Input:** "how do I add an Antragsfrage in TI" / "Antragsfrage TI Live"  
+**Expected:** Multi-step guide: login TI Live → select product/Sparte → Antragsfragen → edit/create. Must mention: double-save when assigning to specific insurers/tariffs. Must mention: grouping (Gruppierung) required.  
+**FAIL if:** Returns only generic "ask Tanja Nitsch" without workflow steps.  
+**Source:** `Arbeitsablauf_Antragserfassung_im_TI.docx` (Author: Tanja Nitsch)
+
+### T9.2 — TI double-save warning
+**Input:** "how do I assign an Antragsfrage to a specific insurer"  
+**Expected:** Mentions the critical two-step save: once in the inner selection window, once in the outer form. States changes are lost if second save is missed.  
+**FAIL if:** Does not mention the double-save requirement.
+
+### T9.3 — Fondsliste workflow
+**Input:** "how do I create a new Fondsliste" / "Fondsliste anlegen LV"  
+**Expected:** 7-step workflow: create Jira ticket (LV-Board, use FBLV-298 as template) → prepare list (Claude Skill "Berufs- und Fondslisten") → upload CSV to SharePoint → create in TI Live → check settings → set default funds → assign to tariffs → go-live check.  
+**FAIL if:** Returns generic LV Fachbereich contact instead of the workflow steps.  
+**Source:** `Workflow Fondslisten (1).docx`
+
+### T9.4 — Fondsliste default funds
+**Input:** "what default funds do I need to set for a Fondsliste"  
+**Expected:** Three categories: renditeorientiert, kostengünstig, nachhaltig — one fund per category. Use ISIN from previous list if fund still exists; otherwise ask insurer and verify comparability.
+
+---
+
+## Test Group 10: New People (org chart Stand: 01.03.2026)
+
+### T10.1 — New Business Analyst
+**Input:** "who is Bibiana Massimo"  
+**Expected:** Business Analyst at comparit, Hamburg.  
+**Note:** No email in source documents — do not invent one.
+
+### T10.2 — Design team
+**Input:** "who works on UI design"  
+**Expected:** Niya Martines (Design UI/LV), Katarzyna Hausbrandt (Design UI LV) — both in Hamburg under CMO Oliver Fink.  
+**Source:** organigram cpit.pdf (Stand: 01.03.2026)
+
+### T10.3 — New developer without email
+**Input:** "what is Ardian Hashu's email"  
+**Expected:** Email not available in source documents.  
+**FAIL if:** Invents any email.
+
+### T10.4 — Chantal Voß role
+**Input:** "what does Chantal Voß do"  
+**Expected:** Business Analystin KO/LV (not just "Business Analystin").  
+**Source:** organigram cpit.pdf (Stand: 01.03.2026)
+
+---
+
+## Test Group 11: Work-Time Policy (updated document)
+
+### T11.1 — Notfallbereitschaft
+**Input:** "do employees work on Fridays for emergencies"  
+**Expected:** Notfallbereitschaft (on-call) exists for 24/7 SLA coverage but does NOT mean regular Friday work. Exact arrangement is agreed per team with the team lead. Compensated appropriately.  
+**Source:** `Arbeitsrichtlinie_Arbeitszeit_comparit.docx`
+
+### T11.2 — Who owns the work-time policy
+**Input:** "who is responsible for the working hours policy"  
+**Expected:** Axel Karkowski (COO, ak@comparit.de) — document owner and contact for work-time/overtime questions.
+
+### T11.3 — Tempo vs Personio
+**Input:** "where do I log my hours" / "where do I submit a vacation request"  
+**Expected:** Hours → Tempo. Vacation/absences/overtime compensation → Personio. Both are different systems. Laimi for questions.  
+**FAIL if:** Says to use Personio for logging hours OR Tempo for vacation requests.
+
+---
+
 ## Running These Tests
 
 To test manually:
@@ -163,5 +256,7 @@ To test the deployed version, use the same questions on the Vercel deployment.
 ## Known Limitations (as of 2026-04-29)
 
 - KV Fachbereich: No BA assigned in source documents. This is a data gap, not a system bug.
-- Some people (Anita Hasani, Arber Mirena, Behxhet Rexha, Cornelia Rieger, Sebastian Houshmand, Muhamed Zeqiri, Fisnik Kusari, Ag Hamiti, Qëndresa Rexhbogaj) have no email in source documents.
+- People without email in source documents: Anita Hasani, Arber Mirena, Behxhet Rexha, Cornelia Rieger, Sebastian Houshmand, Muhamed Zeqiri, Fisnik Kusari, Ag Hamiti, Qëndresa Rexhbogaj, and all new org chart additions (Bibiana Massimo, Niya Martines, Katarzyna Hausbrandt, Fabio Schmied, Donika Krasniqi Gjoka, Ardian Hashu, Nils Dent, Erza Gashi, Kamel Almaj, Miroslava Placecki).
 - Hergen (ChargeIT) and Miro (Sonstige) appear in dev team spreadsheet but have no full name or email in available documents.
+- Dennis Krimilowski's email (support@it-tec.de) and phone are from IT-TEC company, not comparit — this is intentional.
+- Workflow Fondslisten references "Claude Skill 'Berufs- und Fondslisten'" — this is an internal AI tool workflow step, not a WorkBuddy feature.
