@@ -1054,7 +1054,7 @@ export const projects = [
       "Ylli Kllokoqi",
       "Adil Jusufi",
       "Besnik Ejupi",
-      "Levent Öztürk",
+      "Dr. Ing. Dirk Sommermeyer",
       "Xheneta Hasani",
     ],
   },

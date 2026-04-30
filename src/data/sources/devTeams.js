@@ -124,10 +124,10 @@ export const devTeamsData = {
           email: "be@comparit.de",
         },
         {
-          name: "Levent Öztürk",
-          role: "Webservices KV+KFZ",
+          name: "Dr. Ing. Dirk Sommermeyer",
+          role: "Webservices (wisotech)",
           fte: 1.0,
-          email: "loe@comparit.de",
+          email: "",
         },
         {
           name: "Xheneta Hasani",
