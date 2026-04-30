@@ -797,8 +797,8 @@ export const wisotechPeople = [
     languages: [
       L("German", SRC.WISOTECH),
     ],
-    email: "",
-    _src: { role: SRC.WISOTECH, email: null, office: SRC.WISOTECH },
+    email: "ds@comparit.de",
+    _src: { role: SRC.WISOTECH, email: SRC.WISOTECH, office: SRC.WISOTECH },
   },
   {
     name: "Matthias Brauch",

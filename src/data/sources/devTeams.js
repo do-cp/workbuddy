@@ -127,7 +127,7 @@ export const devTeamsData = {
           name: "Dr. Ing. Dirk Sommermeyer",
           role: "Webservices (wisotech)",
           fte: 1.0,
-          email: "",
+          email: "ds@comparit.de",
         },
         {
           name: "Xheneta Hasani",
