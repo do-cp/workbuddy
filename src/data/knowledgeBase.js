@@ -737,17 +737,6 @@ export const people = [
     email: "",
     _src: { role: SRC.ORGCHART, email: null, office: SRC.ORGCHART },
   },
-  {
-    name: "Katarzyna Hausbrandt",
-    role: "Design UI LV",
-    team: "Sales & Marketing",
-    office: "Hamburg",
-    languages: [
-      L("German", null),
-    ],
-    email: "",
-    _src: { role: SRC.ORGCHART, email: null, office: SRC.ORGCHART },
-  },
 
   // ── Management & Support ───────────────────────────────────────────────────
   {
