@@ -740,18 +740,6 @@ export const people = [
 
   // ── Management & Support ───────────────────────────────────────────────────
   {
-    name: "Patrick von der Hagen",
-    role: "IT Spezialist",
-    team: "Management",
-    office: "Remote (Baden-Württemberg)",
-    languages: [
-      L("German",  SRC.STANDORT),
-      L("English", SRC.STANDORT),
-    ],
-    email: "pvdh@comparit.de",
-    _src: { role: SRC.ORGCHART, email: SRC.STANDORT, office: SRC.STANDORT },
-  },
-  {
     name: "Christine Simon",
     role: "Office Assistenz",
     team: "Management",
@@ -872,18 +860,6 @@ export const wisotechPeople = [
     ],
     email: "",
     _src: { role: SRC.WISOTECH, email: null, office: SRC.WISOTECH },
-  },
-  {
-    name: "Patrick von der Hagen",
-    role: "IT Administration",
-    team: "Management",
-    office: "Remote (Baden-Württemberg)",
-    languages: [
-      L("German",  SRC.WISOTECH),
-      L("English", SRC.WISOTECH),
-    ],
-    email: "pvdh@comparit.de",
-    _src: { role: SRC.WISOTECH, email: SRC.WISOTECH, office: SRC.WISOTECH },
   },
   // Design & Development
   {
